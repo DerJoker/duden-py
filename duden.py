@@ -1,6 +1,7 @@
+#!/usr/bin/python
+
 import sys
 import urllib
-import string
 from bs4 import BeautifulSoup
 
 reload(sys)
@@ -8,13 +9,11 @@ sys.setdefaultencoding('utf-8')
 
 duden_main = 'http://www.duden.de'
 
-search = 'suchen/dudenonline'
 r_search = 'rechtschreibung'
 
 # 1st command line argument as word to search
 to_search = sys.argv[1]
 
-search_url = duden_main + '/' + search + '/' + to_search
 r_search_url = duden_main + '/' + r_search + '/' + to_search
 
 duden_url = r_search_url
