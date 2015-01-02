@@ -1,0 +1,134 @@
+<ol class="term_list">
+ <li class="Bedeutung">
+  <ol class="subterm_list">
+   <li id="Bedeutung1a">
+    <span class="content">
+     auf eine bestimmte Weise
+     <a href="/rechtschreibung/ernaehren#b2-Bedeutung-1a" meta-ref-anker="#b2-Bedeutung-1a" meta-ref-id="10174524" meta-ref-name="ernaehren" meta-type="art">
+      ernähren (1a)
+     </a>
+     <div class="Beispiele">
+      <h3>
+       Beispiel
+      </h3>
+      <span class="beispiel">
+       <span class="font_normal">
+        sie nährt ihr Kind selbst
+        <span class="font_kursiv">
+         (stillt es)
+        </span>
+       </span>
+      </span>
+     </div>
+    </span>
+   </li>
+   <li id="Bedeutung1b">
+    <span class="content">
+     sich
+     <a href="/rechtschreibung/ernaehren#b2-Bedeutung-1b" meta-ref-anker="#b2-Bedeutung-1b" meta-ref-id="10174524" meta-ref-name="ernaehren" meta-type="art">
+      ernähren (1b)
+     </a>
+     <div class="Grammatik">
+      <h3>
+       Grammatik
+      </h3>
+      <dl>
+       <dd class="content">
+        sich nähren
+       </dd>
+      </dl>
+     </div>
+     <div class="Besonderheiten">
+      <h3>
+       Gebrauch
+      </h3>
+      <p>
+       <span class="content">
+        gehoben
+       </span>
+      </p>
+     </div>
+    </span>
+   </li>
+  </ol>
+ </li>
+ <li class="Bedeutung">
+  <ol class="subterm_list">
+   <li id="Bedeutung2a">
+    <span class="content">
+     <a href="/rechtschreibung/ernaehren#b2-Bedeutung-2a" meta-ref-anker="#b2-Bedeutung-2a" meta-ref-id="10174524" meta-ref-name="ernaehren" meta-type="art">
+      ernähren (2a)
+     </a>
+     <div class="Besonderheiten">
+      <h3>
+       Gebrauch
+      </h3>
+      <p>
+       <span class="content">
+        gehoben
+       </span>
+      </p>
+     </div>
+    </span>
+   </li>
+   <li id="Bedeutung2b">
+    <span class="content">
+     sich
+     <a href="/rechtschreibung/ernaehren#b2-Bedeutung-2b" meta-ref-anker="#b2-Bedeutung-2b" meta-ref-id="10174524" meta-ref-name="ernaehren" meta-type="art">
+      ernähren (2b)
+     </a>
+     <div class="Besonderheiten">
+      <h3>
+       Gebrauch
+      </h3>
+      <p>
+       <span class="content">
+        gehoben
+       </span>
+      </p>
+     </div>
+    </span>
+   </li>
+  </ol>
+ </li>
+ <li class="Bedeutung" id="Bedeutung3">
+  <span class="content">
+   nahrhaft sein
+   <div class="Beispiele">
+    <h3>
+     Beispiel
+    </h3>
+    <span class="beispiel">
+     <span class="font_normal">
+      Zucker nährt
+     </span>
+    </span>
+   </div>
+  </span>
+ </li>
+ <li class="Bedeutung" id="Bedeutung4">
+  <span class="content">
+   in sich, jemandem entstehen lassen und aufrechterhalten
+   <div class="Besonderheiten">
+    <h3>
+     Gebrauch
+    </h3>
+    <p>
+     <span class="content">
+      gehoben
+     </span>
+    </p>
+   </div>
+   <div class="Beispiele">
+    <h3>
+     Beispiel
+    </h3>
+    <span class="beispiel">
+     <span class="font_normal">
+      eine Hoffnung nähren
+     </span>
+    </span>
+   </div>
+  </span>
+ </li>
+</ol>
