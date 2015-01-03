@@ -4,13 +4,13 @@ import sys
 import urllib
 from bs4 import BeautifulSoup
 
-def duden_search(to_search):
-	search_url = 'http://www.duden.de/suchen/dudenonline/' + to_search
+def duden_search(word):
+	search_url = 'http://www.duden.de/suchen/dudenonline/' + word
 	
 	f_result = urllib.urlopen(search_url).read()
 	soup = BeautifulSoup(f_result)
 	
-	definition_link_list = soup.find_all('h3', text = to_search)
+	definition_link_list = soup.find_all('h3', text = word)
 	# print definition_link_list
 	return definition_link_list
 
@@ -50,17 +50,21 @@ for line in f_aw.readlines():
 		f_awd.write(s_sentence)
 		f_awd.write('\t')
 	elif n_line % 3 == 2:
-		to_search_list = line.split(';')
-		print to_search_list
-		for to_search in to_search_list:
-			to_search = to_search.strip()
-			print to_search
-			definition_link_list = duden_search(to_search)			
+		word_list = line.split(';')
+		print word_list
+		f_awd.write('<div name="word_list">')
+		for word in word_list:
+			word = word.strip()
+			print word
+			f_awd.write('<h1>' + word + '</h1>')
+			definition_link_list = duden_search(word)			
 			for item in definition_link_list:
 				r_search_url = 'http://www.duden.de/' + item.a['href']
 				print r_search_url
+				f_awd.write('<a href="' + r_search_url + '">' + r_search_url + '</a>')
 				write_temp(r_search_url)
 				f_awd.write(get_definition())
+		f_awd.write('</div>')
 	else:
 		f_awd.write('\n')
 
