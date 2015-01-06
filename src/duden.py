@@ -29,6 +29,10 @@ def get_definition():
 	f_tmp = open('temp.txt')
 	duden_def = '<div name="definition">'
 	for line in f_tmp.readlines():
+		pos = line.find('<a href="')
+		if pos > 0:
+			pos = pos + 9
+			line = line[:pos] + duden_url_main + line[pos:]
 		duden_def = duden_def + line.strip()
 	duden_def = duden_def + '</div>'
 	f_tmp.close()
@@ -36,6 +40,8 @@ def get_definition():
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+duden_url_main = 'http://www.duden.de'	# partial link starts with / (eg. /rechtschreibung/naehren)
 
 f_aw = open('anki_word.txt', 'r')
 f_awd = open('anki_word_definition.txt', 'w')
@@ -59,7 +65,7 @@ for line in f_aw.readlines():
 			f_awd.write('<h1>' + word + '</h1>')
 			definition_link_list = duden_search(word)			
 			for item in definition_link_list:
-				r_search_url = 'http://www.duden.de/' + item.a['href']
+				r_search_url = duden_url_main + item.a['href']
 				print r_search_url
 				f_awd.write('<a href="' + r_search_url + '">' + r_search_url + '</a>')
 				write_temp(r_search_url)

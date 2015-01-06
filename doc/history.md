@@ -3,13 +3,11 @@ To do list & History
 
 ## To-do
 
-[Bugfix] double back slash
-
-	http://www.duden.de//rechtschreibung/naehren
-
-[Bugfix] partial link, and no blankspace before and after
+[Bugfix] no blankspace before and after
 
 	die<a href="/rechtschreibung/Verantwortung#b2-Bedeutung-1a" meta-ref-anker="#b2-Bedeutung-1a" meta-ref-id="10031696" meta-ref-name="Verantwortung" meta-type="art">Verantwortung (1a)</a>tragend
+
+[Newfunc] if no definition found because of error word (e.g. ansonst/ansonsten), provide manual input, or cancel this word entry
 
 ## Log
 
@@ -28,3 +26,13 @@ look up automatically words, which are separated by semicolon(;) in a new line
 prettify definition (word, definition ...)
 
 My Clippings.txt -> anki.txt -> anki_word.txt
+
+### Tue Jan  6 21:24:51 CST 2015
+
+[Bugfix] double back slash
+
+	http://www.duden.de//rechtschreibung/naehren
+
+[Bugfix] partial link
+
+	die<a href="/rechtschreibung/Verantwortung#b2-Bedeutung-1a" meta-ref-anker="#b2-Bedeutung-1a" meta-ref-id="10031696" meta-ref-name="Verantwortung" meta-type="art">Verantwortung (1a)</a>tragend

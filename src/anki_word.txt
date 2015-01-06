@@ -11,7 +11,7 @@ Auch Amazon <b>beabsichtigt</b> laut Techradar, die bislang auf Fire-Tablets bes
 beabsichtigen
 
 In Deutschland dürfen ferngesteuerte Flieger zwar von jedermann ohne Genehmigung geflogen werden, aber nur, wenn sie weniger als fünf Kilogramm wiegen und keinem kommerziellen Zweck dienen. <b>Ansonsten</b> brauchen sie eine Aufstiegserlaubnis, die allerdings Ländersache ist und <b>entsprechend</b> uneinheitlich gehandhabt wird.
-ansonsten; entsprechend
+ansonst; entsprechend
 
 Bis zur <b>Umsetzung</b> des Gesetzes können noch zwei Jahre vergehen.
 Umsetzung
@@ -80,7 +80,7 @@ Chang und Kollegen <b>verweisen</b> auf andere Studien, die gezeigt hätten, das
 verweisen
 
 Unsere Ergebnisse <b>belegen</b>, dass das elektrische Licht, dem wir zwischen Sonnenuntergang und der Schlafenszeit <b>ausgesetzt</b> sind, <b>tiefgreifende</b> biologische Wirkungen hat.
-belegen; aussetzen; tiefgreifend
+belegen; aussetzen
 
 Im letzten Augenblick <b>schluckte</b> Meta die ungläubige Frage, die ihr schon <b>auf der Zunge lag</b>, wieder <b>hinunter</b>.
 schlucken
