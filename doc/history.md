@@ -7,7 +7,13 @@ To do list & History
 
 	die<a href="/rechtschreibung/Verantwortung#b2-Bedeutung-1a" meta-ref-anker="#b2-Bedeutung-1a" meta-ref-id="10031696" meta-ref-name="Verantwortung" meta-type="art">Verantwortung (1a)</a>tragend
 
-[Newfunc] if no definition found because of error word (e.g. ansonst/ansonsten), provide manual input, or cancel this word entry
+[Newfunc] if no definition found because of error word (e.g. ansonst/ansonsten), keep this entry in a new file, at the same time, point to the word with empty definition
+
+[Bugfix] no progress
+
+[Modfunc] add new field in Anki (Front, Back, and Duden), update printout of anki_word_definition.txt
+
+[Refactoring] break code into pieces (OOP)
 
 ## Log
 
