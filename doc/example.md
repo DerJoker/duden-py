@@ -54,3 +54,12 @@ edit the file (words to search, separated by semicolon (;))
 ## anki\_word\_definition.txt
 
 	Viele Fahrer verloren die Kontrolle über ihre Autos und kamen von der Straße ab	(\t)<div>verlieren ; ...</div>	(\t)<div><div name="word">verlieren</div><div name="definiton">...</div></div>
+	
+## between pre
+	<pre>
+	Definition (:)
+	Synonym (~)
+	Antonym (<> &lt;&gt;)
+	[Beispiel] 
+	[Misc] 
+	</pre>
