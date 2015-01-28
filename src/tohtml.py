@@ -9,9 +9,16 @@ f_mc = open('My Clippings.txt')
 f_a = open('anki.html', 'w')
 
 f_a.write('<!DOCTYPE html>\n')
+
+"""
+title: Anki
+charset: utf-8
+css: anki.css
+"""
 f_a.write('<html><head>' + 
 		'<title>Anki</title>' + 
 		'<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' + 
+		'<link rel="stylesheet" type="text/css" href="anki.css" />' + 
 		'</head><body>\n')
 
 n_line = 0
