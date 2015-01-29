@@ -1,9 +1,15 @@
 #!/usr/bin/python
 
-import urllib
+import urllib2
 from bs4 import BeautifulSoup
 
 CODEC = 'utf-8'
+
+def duden_read(url):
+	try:
+		return urllib2.urlopen(url, timeout=60).read()
+	except:
+		return ''
 
 """
 Duden
@@ -31,26 +37,25 @@ class Duden:
 	# dudenonline suchen
 	def search(self):
 		d_suchen = d_dudenonline + self.word
-		f_result = urllib.urlopen(d_suchen).read()
-		soup = BeautifulSoup(f_result)
+		soup = BeautifulSoup(duden_read(d_suchen))
 		l_link = soup.find_all('h3', text = self.word)
 		for link in l_link:
+			# /rechtschreibung/vorantreiben -> vorantreiben
 			key = link.a['href'].split('/')[-1]
-			self.dict[key] = []
-			self.dict[key].append(d_rechtschreibung + key)
+			self.dict[key] = [d_rechtschreibung + key, '']
 	
 	# rechtschreibung suchen
 	def r_search(self):
 		# dudenonline suchen
 		self.search()
 		for key in self.dict:
-			soup = BeautifulSoup(urllib.urlopen(d_rechtschreibung + key).read())
+			soup = BeautifulSoup(duden_read(d_rechtschreibung + key))
 			t_result = soup.find_all('span', 'helpref woerterbuch_hilfe_bedeutungen')
 			if len(t_result) > 0:
 				# span (find_all) -> h2 (parent) -> ... (next sibling)
 				html_result = t_result[-1].find_parent().find_next_sibling()
 				s = unicode(html_result)
-				self.dict[key].append(s.replace('\n', ''))
+				self.dict[key][1] = s.replace('\n', '')
 			else:
-				print 'Error! No content found from this link!'
+				print 'Error! No content found from this link! Or timeout! Or ...'
 	

@@ -13,7 +13,7 @@ for item in soup.find_all('div', class_ = 'back'):
     s = ''
     for word in words:
         print word
-        s = s + '\n<pre>\n' + word + '\n</pre>\n\n\n'
+        s = s + '\n<pre>\n' + word + '\n</pre>\n'
         d = duden.Duden(word)
         print d.dict
         for key in d.dict:
@@ -21,6 +21,17 @@ for item in soup.find_all('div', class_ = 'back'):
             s = s + '<div class="content">' + d.dict[key][1] + '</div>\n'
     item.append(BeautifulSoup(s))
 
-f = open('anki2.html', 'w')
-f.write(str(soup))
-f.close()
+# view
+
+f_view = open('view.html', 'w')
+f_view.write(str(soup))
+f_view.close()
+
+# edit (delete content)
+
+for item in soup.find_all('div', class_ = 'content'):
+    item.decompose()
+
+f_edit = open('edit.html', 'w')
+f_edit.write(str(soup))
+f_edit.close()

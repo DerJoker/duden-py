@@ -63,3 +63,9 @@ edit the file (words to search, separated by semicolon (;))
 	[Beispiel] 
 	[Misc] 
 	</pre>
+	
+## view.html
+
+## edit.txt
+
+## anki.txt
