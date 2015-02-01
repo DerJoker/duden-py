@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import duden
+import Duden
+
 from bs4 import BeautifulSoup
 
 soup = BeautifulSoup(open('anki.html'))
@@ -18,7 +19,7 @@ for item in soup.find_all('div', class_ = 'back'):
             for word in words:
                 print word
                 s = s + '\n<pre>\n' + word + '\n</pre>\n'
-                d = duden.Duden(word)
+                d = Duden.Duden(word)
                 print d.dict
                 for key in d.dict:
                     s = s + '<div><a href="' + d.dict[key][0] + '">' + key + '</a></div>\n'
