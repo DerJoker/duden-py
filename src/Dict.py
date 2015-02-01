@@ -1,11 +1,17 @@
 #!/usr/bin/python
 
+import json
 import urllib2
+import codecs
 from bs4 import BeautifulSoup
 
 # define CONSTANT
 
 CODEC = 'utf-8'
+
+DUDEN = 'Duden.json'
+MYDICT = 'MyDict.json'
+GODIC = 'Godic.json'
 
 TIMEOUT = 60
 
@@ -88,3 +94,65 @@ class Duden(Dict):
             print 'No definition found!'
         self.definitions.append(definition)
 
+class Local:
+    
+    def __init__(self):
+        try:
+            self.godic = json.load(codecs.open(GODIC))
+            self.duden = json.load(open(DUDEN))
+        except:
+            self.godic = {}
+            self.duden = {}
+        self.godic_left = []
+        self.duden_left = []
+    
+    def update(self, wordList):
+        count_godic = 0
+        count_duden = 0
+        for word in wordList:
+            if word != '':
+                # lookup in Godic
+                if self.godic.has_key(word) == False:
+                    dictest = Godic(word)
+                    dictest.lookup()
+                    if dictest.displays != []:
+                        self.godic.update(dictest.createDictEntry())
+                        count_godic += 1
+                    else: self.godic_left.append(word)
+                
+                # lookup in Godic
+                if self.duden.has_key(word) == False:
+                    dictest = Duden(word)
+                    dictest.lookup()
+                    if dictest.displays != []:
+                        self.duden.update(dictest.createDictEntry())
+                        count_duden += 1
+                    else: self.duden_left.append(word)
+        
+        print 'Godic updated:', count_godic
+        print 'Duden update:', count_duden
+    
+    def save(self):
+        # save dict locally
+        json.dump(self.godic, open(GODIC, 'w'))
+        json.dump(self.duden, open(DUDEN, 'w'))
+        # save left word
+        f_left = open('left.txt', 'w')
+        f_left.write('Godic:\n\n')
+        for word in self.godic_left:
+            f_left.write(word + '\n')
+        f_left.write('\n\nDuden:\n\n')
+        for word in self.duden_left:
+            f_left.write(word + '\n')
+        f_left.close()
+        print 'Godic count:', len(self.godic)
+        print 'Duden count:', len(self.duden)
+    
+    def check(self, wordList):
+        for word in wordList:
+            if word == '':
+                break
+            if self.godic.has_key(word) == False:
+                print 'Godic:', word
+            if self.duden.has_key(word) == False:
+                print 'Duden:', word

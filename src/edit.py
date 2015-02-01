@@ -1,15 +1,15 @@
 #!/usr/bin/python
 
-import Duden
-
 from bs4 import BeautifulSoup
+
+import Dict
+
+localDict = Dict.Local()
 
 soup = BeautifulSoup(open('anki.html'))
 
-# look up each word
-
 for item in soup.find_all('div', class_ = 'back'):
-    if item != None:
+    try:
         words = item.string.split()
         item.string = ''
         s = ''
@@ -19,12 +19,19 @@ for item in soup.find_all('div', class_ = 'back'):
             for word in words:
                 print word
                 s = s + '\n<pre>\n' + word + '\n</pre>\n'
-                d = Duden.Duden(word)
-                print d.dict
-                for key in d.dict:
-                    s = s + '<div><a href="' + d.dict[key][0] + '">' + key + '</a></div>\n'
-                    s = s + '<div class="content">' + d.dict[key][1] + '</div>\n'
+                try:
+                    res = localDict.duden[word]
+                    print res
+                    i = 0
+                    while i < len(res[0]):
+                        s = s + '<div><a href="' + res[1][i] + '">' + res[0][i] + '</a></div>\n'
+                        s = s + '<div class="content">' + res[2][i] + '</div>\n'
+                        i = i + 1
+                except:
+                    print 'Not found in local Dict:', word
         item.append(BeautifulSoup(s))
+    except:
+        print 'Error in anki.html!'
 
 # view
 
