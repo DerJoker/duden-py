@@ -17,27 +17,33 @@ for item in soup.find_all('div', class_ = 'back'):
     item.string = ''
     s = ''
     if len(words) == 0:
-        s = '\n<pre>\n\n</pre>\n'
+        s = '\n<div class="note">\n\n</div>\n'
     else:
+        s_ref = '<div class="reflink">'
         for word in words:
             print word
-            s = s + '\n<pre>\n' + word + '\n</pre>\n'
+            s = s + '\n<div class="note">\n' + word + '\n</div>\n'
             # lookup in local duden
             if localDict.duden.has_key(word.encode('UTF-8')):
                 res = localDict.duden[word.encode('UTF-8')]
-                s = s + '<div class="duden">'
+                s = s + '<div class="duden" class="content">'
                 for definition in res:
                     s = s + definition['content']
+                    s_ref = s_ref + '<div><a href="' + definition['url'] + '">' + definition['display'] + '</a></div>'
                 s = s + '</div>'
             else: print 'Not found in local Dict Duden:', word
+            
             # lookup in local godic
             if localDict.godic.has_key(word.encode('UTF-8')):
                 res = localDict.godic[word.encode('UTF-8')]
-                s = s + '<div class="godic">'
+                s = s + '<div class="godic" class="content">'
                 for definition in res:
                     s = s + definition['content'].decode('utf-8')
                 s = s + '</div>'
             else: print 'Not found in local Dict Godic:', word
+
+        s_ref = s_ref + '</div>'
+        s = s + s_ref
     item.append(BeautifulSoup(s))
 #     except:
 #         print 'Error in anki.html!'
@@ -59,6 +65,5 @@ for item in soup.find_all('div', class_ = 'content'):
 
 f_edit = open('edit.html', 'w')
 f_edit.write(str(soup).replace('<div class="front">', '\n\n<div class="front">')
-             .replace('</pre>', '</pre>\n')
              .replace('</div>\n\n</div>','</div>\n</div>'))
 f_edit.close()

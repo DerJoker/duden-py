@@ -1,4 +1,8 @@
-.front {font-size: 16pt;}
+.front {
+	font-size: 16pt;
+	border: red solid thin;
+	background: yellow;
+}
 
 /*.content {display: table-row;}*/
 
