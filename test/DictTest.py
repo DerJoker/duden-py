@@ -1,60 +1,62 @@
-#!/usr/bin/python
-
-import json
+# coding: UTF-8
 
 import Dict
 
-DUDEN = 'Duden.json'
-MYDICT = 'MyDict.json'
-GODIC = 'Godic.json'
+# remove break line
+wordList = [line.strip().decode('UTF-8') for line in open('WordList.txt').readlines() if line.strip() != '']
 
-wdList1 = ['verlangen', 'schweben', 'verzahnen', 'abwarten', 'hocken', 'Schlacht', 'Anhaltspunkt', 'Kabine', 'dick', 'getreu', 'tilgen', 'teilen']
-wdList2 = ['Schlacht', '', 'Kabine', 'dick', 'getreu', 'tilgen', 'teilen', 'Pleit', 'Nische', 'Akteur', 'mitgenommen', 'Abrechnung', 'Wucht', 'verlaufen', 'anwidern', 'voraussagen', 'einnehmend', 'hineinversetzen']
+# wordList = [unicode(word, 'utf-8') for word in wordList]
 
-wdList3 = list(set(wdList1 + wdList2))
-print len(wdList3)
+# remove repeat
+wordList = list(set(wordList))
 
-# try:
-#     d_test = json.load(open(GODIC))
-#     d_duden = json.load(open(DUDEN))
-# except:
-#     d_test = {}
-#     d_duden = {}
+print wordList
 
-d_test = {}
-d_duden = {}
+print len(wordList)
 
-left_godic = []
+def GodicTest():
+    
+    for word in wordList:
+        godic = Dict.Godic(word)
+        godic.lookup()
+        try:
+            for definition in godic.definitions:
+                print definition['content']
+        except:
+            print ''
 
-print 'search wdList1: ', len(wdList1)
+def DudenTest():
+    
+    for word in wordList:
+        duden = Dict.Duden(word)
+        duden.lookup()
+        try:
+            for definition in duden.definitions:
+                print definition['content']
+        except:
+            print ''
 
-for word in wdList1:
-    if word != '':
-        dictest = Dict.Duden(word)
-        dictest.lookup()
-        if dictest.displays != []:
-            d_test.update(dictest.createDictEntry())
+def LocalTest():
+    localDict = Dict.Local()
+    for word in wordList:
+        localDict.addEntry(word)
+    localDict.save()
+    
+    localDict = Dict.Local()
+    for word in wordList:
+        if localDict.godic.has_key(word.encode('UTF-8')):
+            print localDict.godic[word.encode('UTF-8')]
         else:
-            left_godic.append(word)
-
-json.dump(d_test, open(DUDEN, 'w'))
-
-print 'search wdList2: ', len(wdList2)
-
-for word in wdList2:
-    if word != '':
-        dictest = Dict.Duden(word)
-        dictest.lookup()
-        if dictest.displays != []:
-            d_test.update(dictest.createDictEntry())
+            print word, 'not in Local Godic!'
+        
+        if localDict.duden.has_key(word.encode('UTF-8')):
+            print localDict.duden[word.encode('UTF-8')]
         else:
-            left_godic.append(word)
+            print word, 'not in Local Duden!'
+    localDict.save()
 
-json.dump(d_test, open(DUDEN, 'w'))
+# GodicTest()
 
-d_test = json.load(open(DUDEN))
-print len(d_test)
+# DudenTest()
 
-print set(wdList3) - set(d_test.keys())
-
-print left_godic
+LocalTest()
