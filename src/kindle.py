@@ -2,11 +2,11 @@
 
 """
 copy 'My Clippings.txt' from Kindle
-transfer to 'Anki.py', keeping only sentences
+transfer to 'anki.html', keeping only sentences
 """
 
 f_mc = open('My Clippings.txt')
-f_a = open('anki.py', 'w')
+f_a = open('anki.html', 'w')
 
 f_a.write('<!DOCTYPE html>\n')
 
@@ -36,4 +36,4 @@ f_a.write('</body></html>')
 f_a.close()		
 f_mc.close()
 
-print 'converted, see anki.py'
+print 'converted, see anki.html'

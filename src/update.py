@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# coding: UTF-8
 
 from bs4 import BeautifulSoup
 
@@ -6,21 +6,23 @@ import Dict
 
 soup = BeautifulSoup(open('anki.html'))
 
+# get wordList from anki.html
+
 wordList = []
 
-# create word list from anki.html
 for item in soup.find_all('div', class_ = 'back'):
-    try:
-        wordList += item.string.split('\n')
-    except:
-        print 'Error in anki.html!'
+    for content in item.contents:
+        try:
+            words = content.strip('\n').split('\n')
+            if words != ['']:
+                wordList += words
+        except:
+            print content
 
-wordList = list(set(wordList))
-
-wordList = [word.strip() for word in wordList if word.strip() != '']
+# wordList = list(set(wordList))
 
 print wordList
-print len(wordList)
+print len(wordList), 'words to update/add.'
 
 # look up each word (and save locally)
 
