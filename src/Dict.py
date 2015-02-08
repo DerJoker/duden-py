@@ -31,7 +31,7 @@ def makeDiv(class_, divin):
 class DictEntry:
     
     def __init__(self, word):
-        self.word = word
+        self.word = word.strip()
 #         self.word = word.encode(CODEC)
         self.definitions = []   # DEFINITION
     

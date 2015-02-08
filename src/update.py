@@ -13,7 +13,7 @@ wordList = []
 for item in soup.find_all('div', class_ = 'back'):
     for content in item.contents:
         try:
-            words = content.strip('\n').split('\n')
+            words = content.strip().split('\n')
             if words != ['']:
                 wordList += words
         except:
