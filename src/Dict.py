@@ -22,12 +22,6 @@ DEFINITION = {'display': '', 'url': '', 'content': ''}
 
 TIMEOUT = 60
 
-def makeHyperlink(display, link):
-    return '<div><a href="' + link + '">' + display + '</a></div>\n'
-
-def makeDiv(class_, divin):
-    return '<div class="' + class_ + '">' + divin + '</div>'
-
 class DictEntry:
     
     def __init__(self, word):
@@ -105,19 +99,6 @@ class Duden(DictEntry):
         self.getDisplays()
         for definition in self.definitions:
             definition['content'] = self.getDefinition(definition['url'])
-    
-    def printDefinitions(self):
-        s = ''
-        for item in self.definitions:
-            s += makeHyperlink(item['display'], item['url'])
-            s += item['content']
-        print makeDiv(CLASSDUDEN, s)
-    
-    def printReflink(self):
-        s = ''
-        for item in self.definitions:
-            s += makeHyperlink(item['display'], item['url'])
-        return makeDiv(CLASSREFLINK, s)
 
 class Local:
     

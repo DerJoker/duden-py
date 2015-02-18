@@ -19,6 +19,8 @@ f_a.write('<html><head>' +
 		'<title>Anki</title>' + 
 		'<meta http-equiv="Content-Type" content="text/py; charset=utf-8" />' + 
 		'<link rel="stylesheet" type="text/css" href="anki.css" />' + 
+		'<script src="https://code.jquery.com/jquery-1.10.2.js"></script>' + 
+		'</script><script type="text/javascript" src="anki.js"></script>' + 
 		'</head><body>\n')
 
 n_line = 0

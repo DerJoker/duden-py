@@ -19,11 +19,11 @@ for item in soup.find_all('div', class_ = 'back'):
                 wordList += words
                 for word in words:
                     print word
-                    s = s + '\n<div class="note">\n' + word + '\n</div>\n'
+                    s = s + '\n<div class="note">\n' + word + '\n</div>\n<div class="definition-py">'
                     # lookup in local duden
                     if localDict.duden.has_key(word.encode('UTF-8')):
                         res = localDict.duden[word.encode('UTF-8')]
-                        s = s + '<div class="duden" class="content">'
+                        s = s + '<div class="duden">'
                         for definition in res:
                             s = s + definition['content']
                             s_ref = s_ref + '<div><a href="' + definition['url'] + '">' + definition['display'] + '</a></div>'
@@ -33,11 +33,13 @@ for item in soup.find_all('div', class_ = 'back'):
                     # lookup in local godic
                     if localDict.godic.has_key(word.encode('UTF-8')):
                         res = localDict.godic[word.encode('UTF-8')]
-                        s = s + '<div class="godic" class="content">'
+                        s = s + '<div class="godic">'
                         for definition in res:
                             s = s + definition['content'].decode('utf-8')
                         s = s + '</div>'
                     else: print 'Not found in local Dict Godic:', word
+                    
+                    s = s + '</div>'
         except:
             s = s + '\n' + str(content).decode('UTF-8') + '\n'
     
@@ -57,11 +59,11 @@ f_view = open('view.html', 'w')
 f_view.write(str(soup))
 f_view.close()
 
-# edit (delete content)
+# edit (delete definition-py)
 
 soup = BeautifulSoup(open('view.html'))
 
-for item in soup.find_all('div', class_ = 'content'):
+for item in soup.find_all('div', class_ = 'definition-py'):
     item.decompose()
 
 f_edit = open('edit.html', 'w')
