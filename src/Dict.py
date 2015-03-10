@@ -88,6 +88,11 @@ class Duden(DictEntry):
         try:
             # span (find_all) -> h2 (parent) -> ... (next sibling)
             html_result = res[-1].find_parent().find_next_sibling()
+            # short link -> complete link
+            for short in html_result.find_all('a'):
+                if str(short['href']).startswith('/rechtschreibung/'):
+                    short['href'] = u'http://www.duden.de' + short['href']
+                    print short
             definition = unicode(html_result).replace('\n', '')
         except:
             definition = ''
