@@ -6,12 +6,31 @@ $(document).ready(function(){
 		fronts[i].id = 'id_' + i;
 	}
 
-	// for (i=0;i<fronts.length;i++) {
-	// 	$("div#id_"+i).removeClass("front");
-	// }
+	$("span.content").after('<button class="copytext">Copy Text</button><button class="copyextra">Copy Extra</button>');
 
-	// alert($("div#id_5").scrollTop());
-	
+
+	$("button.copytext").click(function(){
+		word = $(this).parents("div.definition-py").prev().text();
+		bedeutung = $(this).parent().text();
+		beispiel = $(this).parent().find("div").text();
+		bedeutung = bedeutung.replace(beispiel,"").replace("Copy TextCopy Extra","");
+		// wd = word + bedeutung;
+		// alert(wd);
+		tmpselect = document.createElement("input");
+		tmpselect.value = bedeutung;
+		$(this).after(tmpselect);
+		$(this).next().focus();
+		$(this).next().select();
+	});
+
+	$("button.copyextra").click(function(){
+		beispiel = $(this).parent().find("div").text();
+		tmpselect = document.createElement("input");
+		tmpselect.value = beispiel;
+		$(this).after(tmpselect);
+		$(this).next().focus();
+		$(this).next().select();
+	});
 });
 
 $(document).keydown(function(event){

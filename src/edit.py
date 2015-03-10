@@ -68,5 +68,6 @@ for item in soup.find_all('div', class_ = 'definition-py'):
 
 f_edit = open('edit.html', 'w')
 f_edit.write(str(soup).replace('<div class="front">', '\n\n<div class="front">')
-             .replace('</div>\n\n</div>','</div>\n</div>'))
+             .replace('</div>\n\n</div>','</div>\n</div>')
+             )
 f_edit.close()
