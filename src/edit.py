@@ -63,11 +63,13 @@ f_view.close()
 
 soup = BeautifulSoup(open('view.html'))
 
-for item in soup.find_all('div', class_ = 'definition-py'):
-    item.decompose()
+for item in soup.find_all('div', class_ = 'reflink'):
+    p_back = item.parent
+    p_back.clear()
+    p_back.append(item)
 
 f_edit = open('edit.html', 'w')
 f_edit.write(str(soup).replace('<div class="front">', '\n\n<div class="front">')
-             .replace('</div>\n\n</div>','</div>\n</div>')
+             .replace('<div class="back">', '<div class="back">\n<div class="note">\n\n</div>\n')
              )
 f_edit.close()

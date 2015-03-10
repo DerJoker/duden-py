@@ -6,27 +6,18 @@ $(document).ready(function(){
 		fronts[i].id = 'id_' + i;
 	}
 
-	$("span.content").after('<button class="copytext">Copy Text</button><button class="copyextra">Copy Extra</button>');
+	$("span.content").after('<button class="copytext">Copy Text</button>');
 
 
 	$("button.copytext").click(function(){
 		word = $(this).parents("div.definition-py").prev().text();
 		bedeutung = $(this).parent().text();
 		beispiel = $(this).parent().find("div").text();
-		bedeutung = bedeutung.replace(beispiel,"").replace("Copy TextCopy Extra","");
+		bedeutung = bedeutung.replace(beispiel,"").replace("Copy Text","");
 		// wd = word + bedeutung;
 		// alert(wd);
 		tmpselect = document.createElement("input");
-		tmpselect.value = bedeutung;
-		$(this).after(tmpselect);
-		$(this).next().focus();
-		$(this).next().select();
-	});
-
-	$("button.copyextra").click(function(){
-		beispiel = $(this).parent().find("div").text();
-		tmpselect = document.createElement("input");
-		tmpselect.value = beispiel;
+		tmpselect.value = word + ' : ' + bedeutung;
 		$(this).after(tmpselect);
 		$(this).next().focus();
 		$(this).next().select();
