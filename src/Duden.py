@@ -77,7 +77,8 @@ class Rechtschreibung:
             print d_rechtschreibung, e
             self.wort = ''
         
-        self.aussprache = ''
+        # even if there's actually no mp3 for this word (in case we can find one someday ^_^)
+        self.aussprache = self.rechtschreibung + '.mp3'
         
         self.bild = []
     
@@ -85,15 +86,12 @@ class Rechtschreibung:
         try:
             # it could happen that, there's no mp3 (e.g. sicher_machen)
             url_mp3 = self.soup.find('a', text="Als mp3 abspielen")['href']
-            self.aussprache = self.rechtschreibung + '.mp3'
+            local_mp3 = _path_duden_mp3 + self.aussprache
+            print 'start downloading pronunciation ...', self.wort
+            urllib.urlretrieve(url_mp3, local_mp3)
+            print url_mp3, 'downloaded.'
         except Exception,e:
             print e
-        
-        if self.aussprache != '':
-            local_mp3 = _path_duden_mp3 + self.aussprache
-            print 'start downloading ...', self.aussprache
-            urllib.urlretrieve(url_mp3, local_mp3)
-            print 'mp3 downloaded.'
     
     def downloadImg(self):
         imgs = self.soup.find_all('img', class_='hidden')
