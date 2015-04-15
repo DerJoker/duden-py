@@ -2,3 +2,9 @@
 *.pyc
 
 src/test.py
+
+*.mp3
+
+*.jpg
+
+*.db

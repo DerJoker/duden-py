@@ -7,6 +7,7 @@ $(document).ready(function(){
 	}
 
 	$("span.content").after('<button class="copytext">Copy Text</button>');
+	$("dd.content").after('<button class="copytext">Copy Text</button>');
 
 
 	$("button.copytext").click(function(){
