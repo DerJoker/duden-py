@@ -5,7 +5,7 @@ make Anki card
 '''
 
 def isValidString(s):
-    if isinstance(s, str) and s != '':
+    if isinstance(s, unicode) and s != '':
         return True
     else: return False
 
@@ -56,6 +56,8 @@ class CardExample:
     
     def __init__(self, example, word, definition, pron):
         
+        self.backup = [example, word, definition, pron]
+        
         self.valid = True
         self.example = self.word = self.definition = self.pron = ''
         
@@ -73,11 +75,13 @@ class CardExample:
         return self.valid
     
     '''
+    return string
+    
     Q: example
     A: word : definition
        pron
     '''
-    def printCardImg(self):
+    def printCardExample(self):
         s = ''
         if self.isValid():
             s_front = self.example
@@ -88,3 +92,6 @@ class CardExample:
                 s_back += '[sound:' + self.pron + ']'
             s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>'
         return s
+    
+    def printArgs(self):
+        return type(self.backup[0]), self.backup[0]

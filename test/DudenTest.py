@@ -20,9 +20,9 @@ def writeList(l,txt):
 
 t_rechtschreibung = 'sicher_gefahrlos_tadellos_garantiert'
 # t_rechtschreibung = 'Fall_stuerzen_hinfallen_Sache'
-# t_rechtschreibung = 'schlimm'
-t_rechtschreibung = 'Moment_Zeitpunkt_Zeitspanne'
-t_rechtschreibung = 'Richtung'
+t_rechtschreibung = 'schlimm'
+# t_rechtschreibung = 'Moment_Zeitpunkt_Zeitspanne'
+# t_rechtschreibung = 'Richtung'
 
 rs = Rechtschreibung(t_rechtschreibung)
 
@@ -34,4 +34,6 @@ for item in l:
     
     irs.downloadMP3()
     
-    print irs.printAnkiBeispiel()
+    for card in irs.makeCardExample():
+        print card
+        print '\n'

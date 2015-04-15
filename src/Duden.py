@@ -130,14 +130,17 @@ class Rechtschreibung:
         
         return b
     
-    def printAnkiBeispiel(self):
-        str_anki = ''
+    def makeCardExample(self):
+        cards = []
+        
         for item in self.getBeispiele():
             for example in item[Rechtschreibung.k_examples]:
-                str_anki += example.replace('\n', '') + '\t' + self.wort + ' : ' + item[Rechtschreibung.k_def].replace('\n', '')
-                str_anki += self.printAnkiAussprache()
-                str_anki += '\n\n'
-        return str_anki.encode('utf-8')
+                ce = CardExample(example,self.wort,item[Rechtschreibung.k_def],self.aussprache)
+                if ce.isValid():
+                    cards.append(ce.printCardExample())
+                else: print 'Card Example invalid:', ce.printArgs()
+        
+        return cards
     
     def getWendungen(self):
         print 'Wendungen'
