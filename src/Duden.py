@@ -4,9 +4,9 @@ import urllib
 import urllib2
 from bs4 import BeautifulSoup
 
-from Anki import CardImg
-from Anki import CardIdiom
-from Anki import CardExample
+from anki import CardImg
+from anki import CardIdiom
+from anki import CardExample
 
 """
 Configuration

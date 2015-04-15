@@ -1,11 +1,11 @@
 # coding: UTF-8
 
 import Queue
-from Duden import Rechtschreibung
+from duden import Rechtschreibung
 
-from dAnki import CardImg
-from dAnki import CardIdiom
-from dAnki import CardExample
+from anki import CardImg
+from anki import CardIdiom
+from anki import CardExample
 
 done = 'done.txt'
 pool = 'pool.txt'
