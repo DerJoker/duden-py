@@ -47,6 +47,11 @@ def read(url):
 Class
 '''
 
+class Duden:
+    
+    def __init__(self):
+        print 'Duden'
+
 class Rechtschreibung:
     
     URLRECHTSCHREIBUNG = 'http://www.duden.de/rechtschreibung/'
@@ -142,3 +147,8 @@ class Rechtschreibung:
         soup.find('div', class_='field-name-field-browse').extract()
         # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
         return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
+
+class Analyser:
+    
+    def __init__(self):
+        print 'Analyser'
