@@ -72,7 +72,7 @@ class Rechtschreibung:
         
         try:
             # get_text() return Unicode
-            self.wort = self.soup.find('span', class_='lemma_zeile').get_text()
+            self.wort = self.soup.find('span', class_='lemma_zeile').get_text().strip()
         except Exception,e:
             print d_rechtschreibung, e
             self.wort = ''
