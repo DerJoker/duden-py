@@ -30,8 +30,8 @@ Function
 # #Improve#
 
 def read(url):
-    TIMEOUT = 60
-    TRY = 5
+    TIMEOUT = 10
+    TRY = 3
     count = 0
     r = ''
     while (count < TRY and r == ''):
