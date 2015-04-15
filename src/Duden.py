@@ -85,6 +85,7 @@ class Rechtschreibung:
         
         if self.aussprache != '':
             local_mp3 = _path_duden_mp3 + self.aussprache
+            print 'start downloading ...', self.aussprache
             urllib.urlretrieve(url_mp3, local_mp3)
             print 'mp3 downloaded.'
     
@@ -102,8 +103,9 @@ class Rechtschreibung:
             url_img = imgs[index]['src']
             img_name = self.rechtschreibung + '-' + str(index) + '.' + url_img.split('.')[-1]
             local_img = _path_duden_img + img_name
+            print 'start downloading ...', img_name
             urllib.urlretrieve(url_img, local_img)
-            print 'Image downloaded.'
+            print 'image downloaded.'
             
             content = BeautifulSoup(str(imgs[index].find_parent('span', class_='content')))
             for div in content.find_all(['div', 'span'],recursive=False):
