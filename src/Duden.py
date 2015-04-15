@@ -69,7 +69,8 @@ class Rechtschreibung:
         self.html = read(self.url).replace('\n', '')    # no newline, prepare for Anki card
         self.soup = BeautifulSoup(self.html)
         
-        self.wort = self.soup.select('h1 span span')[0].get_text()
+        # get_text() return Unicode
+        self.wort = self.soup.find('span', class_='lemma_zeile').get_text()
         
         self.aussprache = ''
         
