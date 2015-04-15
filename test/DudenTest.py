@@ -29,14 +29,14 @@ rs = Rechtschreibung(t_rechtschreibung)
 
 print rs.wort
 
-# l = rs.getRechtschreibungOnPage()
-# 
-# for item in l:
-#     print item
-#     irs = Rechtschreibung(item)
-#     
-#     irs.downloadMP3()
-#     
-#     for card in irs.makeCardExample():
-#         print card
-#         print '\n'
+l = rs.getRechtschreibungOnPage()
+ 
+for item in l:
+    print item
+    irs = Rechtschreibung(item)
+     
+    irs.downloadMP3()
+     
+    for card in irs.makeCardExample():
+        print card
+        print '\n'

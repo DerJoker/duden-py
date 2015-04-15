@@ -30,6 +30,7 @@ Function
 # #Improve#
 
 def read(url):
+#     TIMEOUT = 0.010
     TIMEOUT = 10
     TRY = 3
     count = 0
@@ -69,8 +70,12 @@ class Rechtschreibung:
         self.html = read(self.url).replace('\n', '')    # no newline, prepare for Anki card
         self.soup = BeautifulSoup(self.html)
         
-        # get_text() return Unicode
-        self.wort = self.soup.find('span', class_='lemma_zeile').get_text()
+        try:
+            # get_text() return Unicode
+            self.wort = self.soup.find('span', class_='lemma_zeile').get_text()
+        except Exception,e:
+            print d_rechtschreibung, e
+            self.wort = ''
         
         self.aussprache = ''
         
@@ -143,11 +148,13 @@ class Rechtschreibung:
     
     # return Recthschreibung on page without Blaettern part
     def getRechtschreibungOnPage(self):
-        soup = BeautifulSoup(self.html)
-        # remove Blaettern part (Im Alphabet davor, Im Alphabet danach)
-        soup.find('div', class_='field-name-field-browse').extract()
-        # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
-        return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
+        if self.html != '':
+            soup = BeautifulSoup(self.html)
+            # remove Blaettern part (Im Alphabet davor, Im Alphabet danach)
+            soup.find('div', class_='field-name-field-browse').extract()
+            # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
+            return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
+        else: return []
 
 class Analyser:
     
