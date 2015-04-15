@@ -89,11 +89,6 @@ class Rechtschreibung:
             urllib.urlretrieve(url_mp3, local_mp3)
             print 'mp3 downloaded.'
     
-    def printAnkiAussprache(self):
-        if self.aussprache != '':
-            return '<br>[sound:' + self.aussprache + ']'
-        else: return ''
-    
     def downloadImg(self):
         imgs = self.soup.find_all('img', class_='hidden')
         
