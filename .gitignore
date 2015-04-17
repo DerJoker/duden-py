@@ -8,3 +8,5 @@ src/test.py
 *.jpg
 
 *.db
+
+*.html
