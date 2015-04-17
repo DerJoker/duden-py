@@ -92,6 +92,8 @@ class Rechtschreibung:
         self.aussprache = self.rechtschreibung + '.mp3'
         
         self.bild = []
+        
+        self.beispiele = []
     
     def isValid(self):
         return self.rechtschreibung != '' and self.wort != ''
@@ -157,6 +159,26 @@ class Rechtschreibung:
     
     def getWendungen(self):
         print 'Wendungen'
+    
+    def getBilder(self):
+        bilder = []
+        
+        imgs = self.soup.find_all('img', class_='hidden')
+        
+        for img in imgs:
+            text = str(img.find_next_sibling('span', class_='bu')).decode(CODEC)
+            
+            # http://www.duden.de/_media_/full/S/Stellung-201100280769.jpg -> Stellung-201100280769.jpg
+            img_name = img['src'].split('/')
+            
+            content = BeautifulSoup(str(img.find_parent('span', class_='content')))
+            for div in content.find_all(['div', 'span'],recursive=False):
+                div.decompose()
+            definition = str(content).decode(CODEC)
+            
+            bilder.append({Rechtschreibung.k_img:img_name, Rechtschreibung.k_text:text, Rechtschreibung.k_def:definition})
+        
+        return bilder
     
     # return Recthschreibung on page without Blaettern part
     def getRechtschreibungOnPage(self):
