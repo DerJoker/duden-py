@@ -2,6 +2,7 @@
 
 import urllib
 import urllib2
+import os.path
 from bs4 import BeautifulSoup
 
 from anki import CardImg
@@ -16,6 +17,8 @@ Configuration
 _path_duden_mp3 = '../mp3/'
 # picture download path
 _path_duden_img = '../img/'
+# rechtschreibung html path
+_path_rechtschreibung = '../rechtschreibung/'
 
 '''
 Constant
@@ -67,7 +70,15 @@ class Rechtschreibung:
         self.rechtschreibung = d_rechtschreibung
         self.url = Rechtschreibung.URLRECHTSCHREIBUNG + d_rechtschreibung
         
-        self.html = read(self.url).replace('\n', '')    # no newline, prepare for Anki card
+        localRS = _path_rechtschreibung + self.rechtschreibung + '.html'
+        if os.path.exists(localRS):
+            self.html = open(localRS).read()
+        else:
+            self.html = read(self.url).replace('\n', '')    # no newline, prepare for Anki card
+            if self.html != '':
+                with open(localRS,'w') as f:
+                    f.write(self.html)
+        
         self.soup = BeautifulSoup(self.html)
         
         try:
@@ -158,3 +169,13 @@ class Analyser:
     
     def __init__(self):
         print 'Analyser'
+
+'''
+UnitTest
+'''
+
+if __name__ == '__main__':
+    lt = [u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+    for item in lt:
+        print item
+        rs = Rechtschreibung(item)
