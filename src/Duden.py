@@ -93,6 +93,9 @@ class Rechtschreibung:
         
         self.bild = []
     
+    def isValid(self):
+        return self.rechtschreibung != '' and self.wort != ''
+    
     def downloadMP3(self):
         try:
             # it could happen that, there's no mp3 (e.g. sicher_machen)
