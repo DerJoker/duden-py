@@ -232,6 +232,22 @@ class Analyser:
             # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
             return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
         else: return []
+    
+    # return {definition1:[example1,example2...],definition2:[],...}
+    def getExamples(self):
+        examples = {}
+        soup = BeautifulSoup(self.html)
+        items = []
+        items.extend(soup.find_all('div',class_='field-name-field-examples'))
+        items.extend(soup.find_all('div',class_='field-name-field-abstract'))
+        for item in items:
+            for b in item.find_all('div',class_='Beispiele'):
+                definition = unicode(b.parent)
+                # remove divs like Beispiele and Wendungen, spans like term_img
+                for c in b.parent.find_all(['div','span']):
+                    definition = definition.replace(unicode(c),'')
+                examples[definition] = b.find_all('span',class_='beispiel')
+        return examples
 
 '''
 UnitTest
@@ -244,6 +260,7 @@ if __name__ == '__main__':
         rs = Rechtschreibung(item)
         
         analyser = Analyser(rs.html)
-        print analyser.getLinkMP3()
-        print analyser.getLinksIMG()
-        print analyser.getRechtschreibungOnPage()
+#         print analyser.getLinkMP3()
+#         print analyser.getLinksIMG()
+#         print analyser.getRechtschreibungOnPage()
+        analyser.getExamples()
