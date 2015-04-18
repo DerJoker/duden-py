@@ -5,7 +5,7 @@ make Anki card
 '''
 
 def isValidString(s):
-    if isinstance(s, unicode) and s != '':
+    if (isinstance(s, unicode) or isinstance(s, str)) and s != '':
         return True
     else: return False
 
@@ -44,7 +44,7 @@ class CardImg:
                 s_back += self.word + ' : ' + self.definition + '<br>'
             if self.pron != '':
                 s_back += '[sound:' + self.pron + ']'
-            s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>'
+            s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
         return s
 
 class CardIdiom:
@@ -90,7 +90,7 @@ class CardExample:
                 s_back += self.word + ' : ' + self.definition + '<br>'
             if self.pron != '':
                 s_back += '[sound:' + self.pron + ']'
-            s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>'
+            s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
         return s
     
     def printArgs(self):
