@@ -246,7 +246,7 @@ class Analyser:
                 # remove divs like Beispiele and Wendungen, spans like term_img
                 for c in b.parent.find_all(['div','span']):
                     definition = definition.replace(unicode(c),'')
-                examples[definition] = b.find_all('span',class_='beispiel')
+                examples[definition] = [unicode(item) for item in b.find_all('span',class_='beispiel')]
         return examples
 
 '''
