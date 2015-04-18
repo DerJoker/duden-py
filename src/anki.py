@@ -89,7 +89,7 @@ class CardExample:
             if self.word != '' and self.definition != '':
                 s_back += self.word + ' : ' + self.definition + '<br>'
             if self.pron != '':
-                s_back += '[sound:' + self.pron + ']'
+                s_back += '<div>[sound:' + self.pron + ']</div>'
             s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
         return s
     

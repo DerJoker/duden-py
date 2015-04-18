@@ -195,7 +195,7 @@ class Analyser:
     def getWord(self):
         soup = BeautifulSoup(self.html)
         if soup.find('span', class_='lemma_zeile') != None:
-            return soup.find('span', class_='lemma_zeile').get_text().strip()
+            return unicode(soup.find('span', class_='lemma_zeile')).strip()
         return ''
     
     def is_Wortschatz_des_Zertifikats_Deutsch(self):
