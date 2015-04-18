@@ -192,6 +192,15 @@ class Analyser:
     def __init__(self, html):
         self.html = html
     
+    def getLinkMP3(self):
+        soup = BeautifulSoup(self.html)
+        link = soup.find_all('a', text="Als mp3 abspielen")
+        print len(link)
+        if len(link) > 0:
+            # it could happen that, there's no mp3 (e.g. sicher_machen)
+            return soup.find('a', text="Als mp3 abspielen")['href']
+        return None
+    
     # return Recthschreibung on page without Blaettern part
     def getRechtschreibungOnPage(self):
         if self.html != '':
@@ -211,5 +220,7 @@ if __name__ == '__main__':
     for item in lt:
         print item
         rs = Rechtschreibung(item)
-        rs.downloadMP3()
-        rs.downloadImg()
+        
+        analyser = Analyser(rs.html)
+        print analyser.getLinkMP3()
+        print analyser.getRechtschreibungOnPage()
