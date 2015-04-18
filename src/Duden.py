@@ -189,8 +189,18 @@ class Rechtschreibung:
 
 class Analyser:
     
-    def __init__(self):
-        print 'Analyser'
+    def __init__(self, html):
+        self.html = html
+    
+    # return Recthschreibung on page without Blaettern part
+    def getRechtschreibungOnPage(self):
+        if self.html != '':
+            soup = BeautifulSoup(self.html)
+            # remove Blaettern part (Im Alphabet davor, Im Alphabet danach)
+            soup.find('div', class_='field-name-field-browse').extract()
+            # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
+            return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
+        else: return []
 
 '''
 UnitTest
