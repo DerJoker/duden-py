@@ -91,7 +91,7 @@ class CardExample:
             if self.pron != '':
                 s_back += '<div>[sound:' + self.pron + ']</div>'
             s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
-        return s
+        return s.encode('utf-8')
     
     def printArgs(self):
         return type(self.backup[0]), self.backup[0]
