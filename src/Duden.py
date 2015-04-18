@@ -194,9 +194,9 @@ class Analyser:
     
     def getLinkMP3(self):
         soup = BeautifulSoup(self.html)
-        link = soup.find_all('a', text="Als mp3 abspielen")
-        print len(link)
-        if len(link) > 0:
+        links = soup.find_all('a', text="Als mp3 abspielen")
+        print len(links)
+        if len(links) > 0:
             # it could happen that, there's no mp3 (e.g. sicher_machen)
             return soup.find('a', text="Als mp3 abspielen")['href']
         return None
