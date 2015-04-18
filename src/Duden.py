@@ -201,6 +201,10 @@ class Analyser:
             return soup.find('a', text="Als mp3 abspielen")['href']
         return None
     
+    def getLinksIMG(self):
+        soup = BeautifulSoup(self.html)
+        return [img['src'] for img in soup.find_all('img', class_='hidden')]
+    
     # return Recthschreibung on page without Blaettern part
     def getRechtschreibungOnPage(self):
         if self.html != '':
@@ -223,4 +227,5 @@ if __name__ == '__main__':
         
         analyser = Analyser(rs.html)
         print analyser.getLinkMP3()
+        print analyser.getLinksIMG()
         print analyser.getRechtschreibungOnPage()
