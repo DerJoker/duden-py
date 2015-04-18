@@ -192,6 +192,18 @@ class Analyser:
     def __init__(self, html):
         self.html = html
     
+    def getWord(self):
+        soup = BeautifulSoup(self.html)
+        return soup.find('span', class_='lemma_zeile').get_text().strip()
+    
+    def is_Wortschatz_des_Zertifikats_Deutsch(self):
+        soup = BeautifulSoup(self.html)
+        for div in soup.find_all('div',class_='field-name-field-didyouknow'):
+            content = div.find('span',class_='content')
+            if content != None and content.get_text().strip() == u'Dieses Wort gehört zum Wortschatz des Zertifikats Deutsch.':
+                return True
+        return False
+    
     def getLinkMP3(self):
         soup = BeautifulSoup(self.html)
         links = soup.find_all('a', text="Als mp3 abspielen")
