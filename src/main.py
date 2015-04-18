@@ -2,14 +2,14 @@
 
 import os
 
+import config
+
 from duden import Rechtschreibung
 
-_path_rechtschreibung = '../rechtschreibung/'
+if os.path.exists(config._path_rechtschreibung) == False:
+    os.mkdir(config._path_rechtschreibung)
 
-if os.path.exists(_path_rechtschreibung) == False:
-    os.mkdir(_path_rechtschreibung)
-
-lsLocal = os.listdir(_path_rechtschreibung)
+lsLocal = os.listdir(config._path_rechtschreibung)
 lsRS = []
 
 if lsLocal == []:

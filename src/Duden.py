@@ -5,20 +5,17 @@ import urllib2
 import os.path
 from bs4 import BeautifulSoup
 
+import config
 from anki import CardImg
 from anki import CardIdiom
 from anki import CardExample
 
-"""
-Configuration
-"""
-
 # sound download path
-_path_duden_mp3 = '../mp3/'
+_path_duden_mp3 = config._path_duden_mp3
 # picture download path
-_path_duden_img = '../img/'
+_path_duden_img = config._path_duden_img
 # rechtschreibung html path
-_path_rechtschreibung = '../rechtschreibung/'
+_path_rechtschreibung = config._path_rechtschreibung
 
 '''
 Constant
@@ -70,7 +67,7 @@ class Rechtschreibung:
         self.rechtschreibung = d_rechtschreibung
         self.url = Rechtschreibung.URLRECHTSCHREIBUNG + d_rechtschreibung
         
-        localRS = _path_rechtschreibung + self.rechtschreibung + '.html'
+        localRS = os.path.join(_path_rechtschreibung, self.rechtschreibung + '.html')
         if os.path.exists(localRS):
             self.html = open(localRS).read()
         else:
@@ -102,7 +99,7 @@ class Rechtschreibung:
         try:
             # it could happen that, there's no mp3 (e.g. sicher_machen)
             url_mp3 = self.soup.find('a', text="Als mp3 abspielen")['href']
-            local_mp3 = _path_duden_mp3 + self.aussprache
+            local_mp3 = os.path.join(_path_duden_mp3, self.aussprache)
             print 'start downloading pronunciation ...', self.wort
             urllib.urlretrieve(url_mp3, local_mp3)
             print url_mp3, 'downloaded.'
@@ -117,7 +114,7 @@ class Rechtschreibung:
             
             url_img = imgs[index]['src']
             img_name = self.rechtschreibung + '-' + str(index) + '.' + url_img.split('.')[-1]
-            local_img = _path_duden_img + img_name
+            local_img = os.path.join(_path_duden_img, img_name)
             print 'start downloading ...', img_name
             urllib.urlretrieve(url_img, local_img)
             print 'image downloaded.'
@@ -204,3 +201,5 @@ if __name__ == '__main__':
     for item in lt:
         print item
         rs = Rechtschreibung(item)
+        rs.downloadMP3()
+        rs.downloadImg()
