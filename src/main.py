@@ -8,26 +8,27 @@ from duden import Rechtschreibung
 from duden import Analyser
 from anki import CardExample
 
+'''
+functions
+'''
+
 def makeCardsExample():
     f_anki = open('anki_examples.txt','w')
-    lsLocal = os.listdir(config._path_rechtschreibung)
     for local in lsLocal:
         if str(local).endswith('.html'):
             analyser = Analyser(open(os.path.join(config._path_rechtschreibung, local)).read())
             word = analyser.getWord()
+            print word
             mp3 = local.replace('.html','.mp3')
             examples = analyser.getExamples()
             for key in examples:
                 for example in examples[key]:
-#                     print example
                     ce = CardExample(example,word,key,mp3)
-                    print ce.printCardExample()
-                    f_anki.write(ce.printCardExample().encode('utf-8'))
+                    f_anki.write(ce.printCardExample())
     f_anki.close()
 
 def makeCardsExampleZD():
-    f_anki = open('anki_examples.txt','w')
-    lsLocal = os.listdir(config._path_rechtschreibung)
+    f_anki = open('anki_examples_zd.txt','w')
     for local in lsLocal:
         if str(local).endswith('.html'):
             analyser = Analyser(open(os.path.join(config._path_rechtschreibung, local)).read())
@@ -39,23 +40,36 @@ def makeCardsExampleZD():
                 for key in examples:
                     for example in examples[key]:
                         ce = CardExample(example,word,key,mp3)
-                        f_anki.write(ce.printCardExample().encode('utf-8'))
+                        f_anki.write(ce.printCardExample())
     f_anki.close()
+
+def moreRechtschreibung(lsLocal):
+    lsRS = []
+    if lsLocal == []:
+        # seed
+        lsRS.extend([u'abfahren', u'Bild'])
+    
+    for local in lsLocal:
+        analyser = Analyser(open(os.path.join(config._path_rechtschreibung, local)).read())
+        lsRS.extend(analyser.getRechtschreibungOnPage())
+    
+    lsRS = list(set(lsRS))
+    
+    for irs in lsRS:
+        print irs
+        rs = Rechtschreibung(irs)
+
+'''
+main()
+'''
 
 if os.path.exists(config._path_rechtschreibung) == False:
     os.mkdir(config._path_rechtschreibung)
     print 'path', config._path_rechtschreibung, 'created'
 
-lsLocal = os.listdir(config._path_rechtschreibung)
-lsRS = []
-
-if lsLocal == []:
-    # seed
-    lsRS.extend([u'abfahren', u'Bild'])
-    # ...
+lsLocal = [item for item in os.listdir(config._path_rechtschreibung) if str(item).endswith('.html')]
 
 # makeCardsExample()
 makeCardsExampleZD()
 
-# lsRS = list(set(lsRS))
-# print 'lsRS:', len(lsRS)
+# moreRechtschreibung(lsLocal)
