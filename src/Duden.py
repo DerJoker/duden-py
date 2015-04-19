@@ -22,6 +22,8 @@ Constant
 '''
 
 CODEC = 'UTF-8'
+TIMEOUT = 10
+TRY = 3
 
 '''
 Function
@@ -30,9 +32,6 @@ Function
 # #Improve#
 
 def read(url):
-#     TIMEOUT = 0.010
-    TIMEOUT = 10
-    TRY = 3
     count = 0
     r = ''
     while (count < TRY and r == ''):
@@ -43,6 +42,15 @@ def read(url):
             r = ''
         count += 1
     return r
+
+# download (read & save)
+def download(url,local):
+    r = read(url)
+    if r != '':
+        with open(local,'w') as f:
+            f.write(r)
+        print 'download successfully!'
+    else: print 'download failed!'
 
 '''
 Class
