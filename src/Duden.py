@@ -103,6 +103,10 @@ class Rechtschreibung:
     def isValid(self):
         return self.rechtschreibung != '' and self.wort != ''
     
+    # href="/rechtschreibung/weit" -> href="http://www.duden.de/rechtschreibung/weit"
+    def completeRechtschreibungLinks(self):
+        self.html = self.html.replace('href="/rechtschreibung/', 'href="' + Rechtschreibung.URLRECHTSCHREIBUNG)
+    
     def downloadMP3(self):
         try:
             # it could happen that, there's no mp3 (e.g. sicher_machen)
