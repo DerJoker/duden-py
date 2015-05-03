@@ -9,6 +9,21 @@ def isValidString(s):
         return True
     else: return False
 
+class Card:
+    
+    def __init__(self, rechtschreibung, front, back):
+        self.rechtschreibung = rechtschreibung
+        self.front = front.replace('\n','')
+        self.back = back.replace('\n','')
+    
+    '''
+    self -> str
+    
+    Make printable anki card string    
+    '''
+    def makeCard(self):
+        return '<div class="' + self.rechtschreibung + '">' + self.front + '</div>\t<div>' + self.back + '</div>\n\n'
+
 class CardImg:
     
     def __init__(self, img, text, word, definition, pron):
@@ -95,3 +110,14 @@ class CardExample:
     
     def printArgs(self):
         return type(self.backup[0]), self.backup[0]
+
+'''
+UnitTest
+'''
+
+if __name__ == '__main__':
+    rs = u'bekommen'
+    front = u'<span class="beispiel"><span class="font_normal">das Buch ist nicht mehr zu bekommen</span></span>'
+    back = u'<span class="lemma_zeile"> <span class="lemma">be­kom­men</span> </span> : <span class="content">kaufen können, (gegen Geld) erhalten</span><br /><div>[sound:bekommen.mp3]</div>'
+    cd = Card(rs, front, back)
+    print cd.makeCard()
