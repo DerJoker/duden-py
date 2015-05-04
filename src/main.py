@@ -32,6 +32,7 @@ def makeCardsExample():
 def makeCardsExampleZD():
     f_anki = open('anki_examples_zd.txt','w')
     for local in lsLocal:
+        rs = local.replace('.html','')
         analyser = Analyser(open(os.path.join(config._path_rechtschreibung, local)).read())
         if analyser.is_Wortschatz_des_Zertifikats_Deutsch():
             word = analyser.getWord()
@@ -42,8 +43,10 @@ def makeCardsExampleZD():
             examples = analyser.getExamples()
             for key in examples:
                 for example in examples[key]:
-                    ce = CardExample(example,word,key,mp3)
-                    f_anki.write(ce.printCardExample())
+                    ce = CardExample(rs,example,word,key,mp3)
+                    ce.buildFrontStr()
+                    ce.buildBackStr()
+                    f_anki.write(ce.makeCard())
     f_anki.close()
 
 def moreRechtschreibung(lsLocal):

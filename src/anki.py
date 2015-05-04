@@ -11,10 +11,13 @@ def isValidString(s):
 
 class Card:
     
-    def __init__(self, rechtschreibung, front, back):
-        self.rechtschreibung = rechtschreibung
+    def __init__(self, front, back):
         self.front = front.replace('\n','')
         self.back = back.replace('\n','')
+        self.valid = True
+    
+    def isValid(self):
+        return self.valid
     
     '''
     self -> str
@@ -22,7 +25,8 @@ class Card:
     Make printable anki card string    
     '''
     def makeCard(self):
-        return '<div class="' + self.rechtschreibung + '">' + self.front + '</div>\t<div>' + self.back + '</div>\n\n'
+        s = '<div class="front">' + self.front + '</div>\t<div class="back">' + self.back + '</div>\n\n'
+        return s.encode('utf-8')
 
 class CardImg:
     
@@ -67,27 +71,35 @@ class CardIdiom:
     def __init__(self):
         print 'Card Idiom'
     
-class CardExample:
+class CardExample(Card):
     
-    def __init__(self, example, word, definition, pron):
-        
-        self.backup = [example, word, definition, pron]
+    def __init__(self, rechtschreibung, example, word, definition, pron):
         
         self.valid = True
-        self.example = self.word = self.definition = self.pron = ''
+        self.rechtschreibung = self.example = self.word = self.definition = self.pron = ''
         
-        if isValidString(example):
-            self.example = example.replace('\n','')
+        if isValidString(rechtschreibung) and isValidString(example):
+            self.rechtschreibung = rechtschreibung
+            self.example = example
             if isValidString(word) and isValidString(definition):
-                self.word = word.replace('\n','')
-                self.definition = definition.replace('\n','')
+                self.word = word
+                self.definition = definition
             if  isValidString(pron):
-                self.pron = pron.replace('\n','')
+                self.pron = pron
         else:
             self.valid = False
     
-    def isValid(self):
-        return self.valid
+    def buildFrontStr(self):
+        self.front = '<div class="' + self.rechtschreibung + '">' + self.example + '</div>'
+        self.front = self.front.replace('\n','')
+    
+    def buildBackStr(self):
+        self.back = ''
+        if self.word != '' and self.definition != '':
+            self.back += self.word + ' : ' + self.definition
+        if self.pron != '':
+            self.back += '<br /><div>[sound:' + self.pron + ']</div>'
+        self.back = self.back.replace('\n','')
     
     '''
     return string
@@ -107,17 +119,28 @@ class CardExample:
                 s_back += '<div>[sound:' + self.pron + ']</div>'
             s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
         return s.encode('utf-8')
-    
-    def printArgs(self):
-        return type(self.backup[0]), self.backup[0]
 
 '''
 UnitTest
 '''
 
 if __name__ == '__main__':
-    rs = u'bekommen'
-    front = u'<span class="beispiel"><span class="font_normal">das Buch ist nicht mehr zu bekommen</span></span>'
+    
+    front = u'<div class="bekommen"><span class="beispiel"><span class="font_normal">das Buch ist nicht mehr zu bekommen</span></span></div>'
     back = u'<span class="lemma_zeile"> <span class="lemma">be­kom­men</span> </span> : <span class="content">kaufen können, (gegen Geld) erhalten</span><br /><div>[sound:bekommen.mp3]</div>'
-    cd = Card(rs, front, back)
+    
+    rs = u'bekommen'
+    example = u'<span class="beispiel"><span class="font_normal">das Buch ist nicht mehr zu bekommen</span></span>'
+    word = u'<span class="lemma_zeile"> <span class="lemma">be­kom­men</span> </span>'
+    definition = u'<span class="content">kaufen können, (gegen Geld) erhalten</span>'
+    pron = u'bekommen.mp3'
+    
+    # test Card
+    cd = Card(front, back)
     print cd.makeCard()
+    
+    # test CardExample
+    cdEx = CardExample(rs, example, word, definition, pron)
+    cdEx.buildFrontStr()
+    cdEx.buildBackStr()
+    print cdEx.makeCard()
