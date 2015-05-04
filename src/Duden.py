@@ -202,7 +202,7 @@ class Rechtschreibung:
 class Analyser:
     
     def __init__(self, html):
-        self.html = html
+        self.html = html.replace('href="/rechtschreibung/', 'href="http://www.duden.de/rechtschreibung/')
     
     def getWord(self):
         soup = BeautifulSoup(self.html)
