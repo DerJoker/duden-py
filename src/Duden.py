@@ -154,16 +154,6 @@ class Rechtschreibung:
             bilder.append({Rechtschreibung.k_img:img_name, Rechtschreibung.k_text:text, Rechtschreibung.k_def:definition})
         
         return bilder
-    
-    # return Recthschreibung on page without Blaettern part
-    def getRechtschreibungOnPage(self):
-        if self.html != '':
-            soup = BeautifulSoup(self.html)
-            # remove Blaettern part (Im Alphabet davor, Im Alphabet danach)
-            soup.find('div', class_='field-name-field-browse').extract()
-            # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
-            return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
-        else: return []
 
 class Analyser:
     
@@ -208,7 +198,7 @@ class Analyser:
             # remove Blaettern part (Im Alphabet davor, Im Alphabet danach)
             soup.find('div', class_='field-name-field-browse').extract()
             # /rechtschreibung/fallen#b2-Bedeutung-1d -> fallen
-            return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="/rechtschreibung/"]')]
+            return [link['href'].split('/')[-1].split('#')[0] for link in soup.select('a[href^="http://www.duden.de/rechtschreibung/"]')]
         else: return []
     
     # return {definition1:[example1,example2...],definition2:[],...}
@@ -232,7 +222,9 @@ UnitTest
 '''
 
 if __name__ == '__main__':
-    lt = [u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+    lt = [item.strip() for item in open('wzd_list.txt').readlines()]
+#     lt = [u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+    
     for item in lt:
         print item
         rs = Rechtschreibung(item)
@@ -240,5 +232,5 @@ if __name__ == '__main__':
         analyser = Analyser(rs.html)
 #         print analyser.getLinkMP3()
 #         print analyser.getLinksIMG()
-#         print analyser.getRechtschreibungOnPage()
-        analyser.getExamples()
+        print analyser.getRechtschreibungOnPage()
+#         print analyser.getExamples()
