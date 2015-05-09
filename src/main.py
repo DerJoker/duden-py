@@ -14,6 +14,16 @@ from anki import CardExample
 functions
 '''
 
+def findAllWZD():
+    f = open('wzd_list.txt','w')
+    for local in lsLocal:
+        analyser = Analyser(open(os.path.join(config._path_rechtschreibung, local)).read())
+        if analyser.is_Wortschatz_des_Zertifikats_Deutsch():
+            rs = local.replace('.html','')
+            f.write(rs + '\n')
+            print rs
+    f.close()
+
 def makeCardsExample():
     f_anki = open('anki_examples.txt','w')
     for local in lsLocal:
@@ -75,7 +85,9 @@ if os.path.exists(config._path_rechtschreibung) == False:
 
 lsLocal = [item for item in os.listdir(config._path_rechtschreibung) if str(item).endswith('.html')]
 
+findAllWZD()
+
 # makeCardsExample()
-makeCardsExampleZD()
+# makeCardsExampleZD()
 
 # moreRechtschreibung(lsLocal)
