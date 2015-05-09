@@ -6,6 +6,7 @@ import os.path
 from bs4 import BeautifulSoup
 
 import config
+import tools
 from anki import CardImg
 from anki import CardIdiom
 from anki import CardExample
@@ -16,41 +17,6 @@ _path_duden_mp3 = config._path_duden_mp3
 _path_duden_img = config._path_duden_img
 # rechtschreibung html path
 _path_rechtschreibung = config._path_rechtschreibung
-
-'''
-Constant
-'''
-
-CODEC = 'UTF-8'
-TIMEOUT = 10
-TRY = 3
-
-'''
-Function
-'''
-
-# #Improve#
-
-def read(url):
-    count = 0
-    r = ''
-    while (count < TRY and r == ''):
-        try:
-            r = urllib2.urlopen(url, timeout=TIMEOUT).read()
-        except Exception,e:
-            print e
-            r = ''
-        count += 1
-    return r
-
-# download (read & save)
-def download(url,local):
-    r = read(url)
-    if r != '':
-        with open(local,'w') as f:
-            f.write(r)
-        print 'download successfully!'
-    else: print 'download failed!'
 
 '''
 Class
@@ -79,7 +45,7 @@ class Rechtschreibung:
         if os.path.exists(localRS):
             self.html = open(localRS).read()
         else:
-            self.html = read(self.url).replace('\n', '')    # no newline, prepare for Anki card
+            self.html = tools.read(self.url).replace('\n', '')    # no newline, prepare for Anki card
             if self.html != '':
                 with open(localRS,'w') as f:
                     f.write(self.html)
@@ -122,7 +88,7 @@ class Rechtschreibung:
         imgs = self.soup.find_all('img', class_='hidden')
         
         for index in range(len(imgs)):
-            text = str(imgs[index].find_next_sibling('span', class_='bu')).decode(CODEC)
+            text = str(imgs[index].find_next_sibling('span', class_='bu')).decode(tools.CODEC)
             
             url_img = imgs[index]['src']
             img_name = self.rechtschreibung + '-' + str(index) + '.' + url_img.split('.')[-1]
@@ -134,7 +100,7 @@ class Rechtschreibung:
             content = BeautifulSoup(str(imgs[index].find_parent('span', class_='content')))
             for div in content.find_all(['div', 'span'],recursive=False):
                 div.decompose()
-            definition = str(content).decode(CODEC)
+            definition = str(content).decode(tools.CODEC)
                         
             self.bild.append({Rechtschreibung.k_img:img_name, Rechtschreibung.k_text:text, Rechtschreibung.k_def:definition})
     
@@ -149,8 +115,8 @@ class Rechtschreibung:
                 div.decompose()
             examples = []
             for bs in beispiel.find_all('span', class_='beispiel'):
-                examples.append(str(bs).decode(CODEC))
-            b.append({Rechtschreibung.k_def:str(bedeutung).decode(CODEC),Rechtschreibung.k_examples:examples})
+                examples.append(str(bs).decode(tools.CODEC))
+            b.append({Rechtschreibung.k_def:str(bedeutung).decode(tools.CODEC),Rechtschreibung.k_examples:examples})
         
         return b
     
@@ -175,7 +141,7 @@ class Rechtschreibung:
         imgs = self.soup.find_all('img', class_='hidden')
         
         for img in imgs:
-            text = str(img.find_next_sibling('span', class_='bu')).decode(CODEC)
+            text = str(img.find_next_sibling('span', class_='bu')).decode(tools.CODEC)
             
             # http://www.duden.de/_media_/full/S/Stellung-201100280769.jpg -> Stellung-201100280769.jpg
             img_name = img['src'].split('/')
@@ -183,7 +149,7 @@ class Rechtschreibung:
             content = BeautifulSoup(str(img.find_parent('span', class_='content')))
             for div in content.find_all(['div', 'span'],recursive=False):
                 div.decompose()
-            definition = str(content).decode(CODEC)
+            definition = str(content).decode(tools.CODEC)
             
             bilder.append({Rechtschreibung.k_img:img_name, Rechtschreibung.k_text:text, Rechtschreibung.k_def:definition})
         
