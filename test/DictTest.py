@@ -3,7 +3,7 @@
 import Dict
 
 # remove break line
-wordList = [line.strip().decode('UTF-8') for line in open('WordList.txt').readlines() if line.strip() != '']
+wordList = [line.strip().decode('UTF-8') for line in open('words.txt').readlines() if line.strip() != '']
 
 # wordList = [unicode(word, 'utf-8') for word in wordList]
 
