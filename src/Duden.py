@@ -69,6 +69,14 @@ class Rechtschreibung:
     def isValid(self):
         return self.rechtschreibung != '' and self.wort != ''
     
+    '''
+    -> str / unicode
+    
+    Return slice Aussprache.
+    '''
+    def sliceAussprache(self):
+        return unicode(self.soup.find('div', class_='field-name-field-pronunciation'))
+    
     # href="/rechtschreibung/weit" -> href="http://www.duden.de/rechtschreibung/weit"
     def completeRechtschreibungLinks(self):
         self.html = self.html.replace('href="/rechtschreibung/', 'href="' + Rechtschreibung.URLRECHTSCHREIBUNG)
@@ -222,15 +230,21 @@ UnitTest
 '''
 
 if __name__ == '__main__':
-    lt = [item.strip() for item in open('wzd_list.txt').readlines()]
-#     lt = [u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+#     f_log = open('log.txt','w')
+    
+#     lt = [item.strip() for item in open('wzd_list.txt').readlines()]
+    lt = [u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
     
     for item in lt:
         print item
         rs = Rechtschreibung(item)
         
-        analyser = Analyser(rs.html)
-#         print analyser.getLinkMP3()
+        print rs.sliceAussprache()
+        
+#         analyser = Analyser(rs.html)
+#         analyser.getLinkMP3()
 #         print analyser.getLinksIMG()
-        print analyser.getRechtschreibungOnPage()
+#         print analyser.getRechtschreibungOnPage()
 #         print analyser.getExamples()
+    
+#     f_log.close()
