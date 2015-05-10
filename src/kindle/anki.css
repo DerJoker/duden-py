@@ -1,0 +1,38 @@
+.front {
+	font-size: 16pt;
+	border: red solid thin;
+	background: yellow;
+	clear: both;
+}
+
+.back {
+	clear: both;
+}
+
+.note {
+	text-align: center;
+	font-size: 150%;
+	font-weight: bold;
+	clear: both;
+}
+
+.definition-py {
+	border: black solid thin;
+	clear: both;
+}
+
+.duden {
+	float: left;
+	width: 46%;
+	margin: 2%
+}
+
+.godic {
+	float: right;
+	width: 46%;
+	margin: 2%;
+}
+
+.reflink {
+	clear: both;
+}
