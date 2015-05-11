@@ -83,14 +83,21 @@ class Rechtschreibung:
     Return list of Bedeutungen / definitions with examples, if there is.
     '''
     def sliceBedeutungen(self):
-        # <span class="content">Bedeutung...<div class="Beispiele">...</div>...</span>
-        l = [item.parent for item in self.soup.find_all('div',class_='Beispiele')]
+        # try first field examples
+        field_examples = self.soup.find('div',class_='field-name-field-examples')
         
-        # if empty, at least we should find Bedeutung / definition
-        if l == []:
-            l = self.soup.find_all('div',class_='field-name-field-abstract')
+        if field_examples != None and field_examples.find('h2') != None:
+            return [unicode(item) for item in field_examples.find('h2').find_next_sibling().find_all(recursive=False)]
         
-        return [unicode(item) for item in l]
+        # if not, try then field abstract
+        field_abstract = self.soup.find('div',class_='field-name-field-abstract')
+        
+        if field_abstract != None and field_abstract.find('h2') != None:
+            return [unicode(item) for item in field_abstract.find('h2').find_next_sibling().find_all(recursive=False)]
+        
+        # it shouldn't come to this ...
+        return []
+#         return [unicode(item) for item in l]
     
     # href="/rechtschreibung/weit" -> href="http://www.duden.de/rechtschreibung/weit"
     def completeRechtschreibungLinks(self):
@@ -248,8 +255,8 @@ if __name__ == '__main__':
 #     f_log = open('log.txt','w')
     
     # Rechtschreibung list for test
-    lt = [u'Chip', u'verhe̲e̲rend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
-    lt = [u'verhe̲e̲rend']
+    lt = [u'Chip', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+#     lt = [u'verhe̲e̲rend']
     # WZD in wzd_list.txt
 #     lt = [item.strip() for item in open('wzd_list.txt').readlines()]
     
