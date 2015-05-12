@@ -81,6 +81,17 @@ class Rechtschreibung:
     -> [str]
     
     Return list of Bedeutungen / definitions with examples, if there is.
+    
+    Besides Bedeutung / definition, there can also be:
+     + Abkuerzung
+     + Aussprache
+     + Besonderheiten
+     + Beispiele
+     + Grammatik
+     + Herkunft
+     + Wendungen
+    
+    Among which, what could be of interest are Beispiele and Wendungen.
     '''
     def sliceBedeutungen(self):
         # try first field examples
