@@ -100,18 +100,18 @@ class DudenFactory:
         for df in rs_slice:
             soup = BeautifulSoup(df)
             
-            li = soup.find('li', recursive=False)
             # in case <li class="Bedeutung"> with sub term list
-            if li != None and soup.li.has_attr('id') == False:
-                for h3 in soup.find_all('h3'):
-                    h3.parent.extract()
-                print len(li.select('ol > li')), li.select('ol > li')
-#                 print soup
-#                 print len(soup.find_all(class_='content')), soup.find_all(class_='content')
+            li_ol_li = soup.select('li > ol > li')
+            if len(li_ol_li) > 0:
+                for li in li_ol_li:
+                    for h3 in li.find_all('h3'):
+                        h3.parent.extract()
+                    print li
+#                     print len(li.find_all(class_='content')), li.find_all(class_='content')
             else:
                 for h3 in soup.find_all('h3'):
                     h3.parent.extract()
-#                 print soup
+                print soup
 
 
 '''
