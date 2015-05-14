@@ -82,7 +82,7 @@ class Rechtschreibung:
     
     Return list of Bedeutungen / definitions with examples, if there is.
     
-    Besides Bedeutung / definition, there can also be:
+    Besides Bedeutung / definition, there can also be (class name):
      + Abkuerzung
      + Aussprache
      + Besonderheiten
