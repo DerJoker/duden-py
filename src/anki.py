@@ -28,6 +28,13 @@ class Card:
         s = '<div class="front">' + self.front + '</div>\t<div class="back">' + self.back + '</div>\n\n'
         return s.encode('utf-8')
 
+class CardDefinition(Card):
+    
+    def __init__(self, word, definition, examples_with_sound):
+        # front type Cloze
+        self.front = u'{{c1::' + word + u'}} : ' + definition
+        self.back = examples_with_sound
+
 class CardImg:
     
     def __init__(self, img, text, word, definition, pron):
