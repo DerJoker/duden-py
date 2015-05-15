@@ -78,7 +78,7 @@ class Rechtschreibung:
         return unicode(self.soup.find('h1'))
     
     def getWortText(self):
-        return unicode(self.soup.find('h1').get_text())
+        return unicode(self.soup.find('h1').get_text().strip())
     
     '''
     -> str (unicode)
