@@ -70,7 +70,18 @@ class Rechtschreibung:
         return self.rechtschreibung != '' and self.wort != ''
     
     '''
-    -> str / unicode
+    -> str (unicode)
+    
+    Return word
+    '''
+    def getWortHTML(self):
+        return unicode(self.soup.find('h1'))
+    
+    def getWortText(self):
+        return unicode(self.soup.find('h1').get_text())
+    
+    '''
+    -> str (unicode)
     
     Return slice Aussprache.
     '''
@@ -277,9 +288,10 @@ if __name__ == '__main__':
     for item in lt:
         rs = Rechtschreibung(item)
         
+        print item, ':', rs.getWortText()
 #         print rs.sliceAussprache()
-        print item, ':', len(rs.sliceBedeutungen())
-        print rs.sliceBedeutungen()
+#         print item, ':', len(rs.sliceBedeutungen())
+#         print rs.sliceBedeutungen()
         
 #         analyser = Analyser(rs.html)
 #         analyser.getLinkMP3()
