@@ -112,6 +112,41 @@ class DudenFactory:
                 for h3 in soup.find_all('h3'):
                     h3.parent.extract()
                 print soup
+    
+    '''
+    -> [(str, str), ...]
+    
+    Return list of 2 strings (Tuple) as anki front and back    
+    '''
+    def getCardDefinitionWithExamples(self):
+        results = []
+        sound = self.getSoundText()
+        
+        rs_slice = Rechtschreibung(self.rechtschreibung).sliceBedeutungen()
+        for df in rs_slice:
+            soup = BeautifulSoup(df)
+            
+            # in case <li class="Bedeutung"> with sub term list
+            li_ol_li = soup.select('li > ol > li')
+            if len(li_ol_li) > 0:
+                for li in li_ol_li:
+                    beispiele = u''
+                    for h3 in li.find_all('h3'):
+                        if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
+                            beispiele = h3.parent.extract()
+                        else:
+                            h3.parent.extract()
+                    results.append((unicode(li), unicode(beispiele) + '<br>' + sound))
+            else:
+                beispiele = u''
+                for h3 in soup.find_all('h3'):
+                    if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
+                        beispiele = h3.parent.extract()
+                    else:
+                        h3.parent.extract()
+                results.append((unicode(soup), unicode(beispiele) + '<br>' + sound))
+        
+        return results
 
 
 '''
@@ -132,4 +167,7 @@ if __name__ == '__main__':
     for item in lt:
 #         print item, ':', DudenFactory(item).getSoundText()
         print item
-        DudenFactory(item).getDefinitions()
+#         DudenFactory(item).getDefinitions()
+        for tp in DudenFactory(item).getCardDefinitionWithExamples():
+            cd = anki.Card(tp[0], tp[1])
+            print cd.makeCard()
