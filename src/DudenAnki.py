@@ -169,7 +169,7 @@ if __name__ == '__main__':
     for item in lt:
 #         print item, ':', DudenFactory(item).getSoundText()
         print item
-        word = Rechtschreibung(item).getWortHTML()
+        word = Rechtschreibung(item).getWortText()
 #         DudenFactory(item).getDefinitions()
         for tp in DudenFactory(item).getCardDefinitionWithExamples():
             cd = anki.CardDefinition(word, tp[0], tp[1])
