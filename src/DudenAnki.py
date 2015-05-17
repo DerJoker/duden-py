@@ -101,22 +101,24 @@ class DudenFactory:
             soup = BeautifulSoup(df)
             
             # in case <li class="Bedeutung"> with sub term list
-            li_ol_li = soup.select('li > ol > li')
-            if len(li_ol_li) > 0:
-                for li in li_ol_li:
-                    for h3 in li.find_all('h3'):
-                        h3.parent.extract()
-                    print li.find('span', class_='content')
-#                     print len(li.find_all(class_='content')), li.find_all(class_='content')
-            else:
-                for h3 in soup.find_all('h3'):
+            dfs_contents = soup.select('li > ol > li')
+            
+            if dfs_contents == []:
+                dfs_contents = soup.contents
+            
+            for item in dfs_contents:
+                for h3 in item.find_all('h3'):
                     h3.parent.extract()
-                print soup.find(['span', 'dd'], class_='content')
+                
+                if item.name in ['li', 'dd']:
+                    item.name = 'div'
+                
+                print item
     
     '''
     -> [(str, str), ...]
     
-    Return list of 2 strings (Tuple) as anki front and back    
+    Return list of 2 strings (Tuple) as definition and examples    
     '''
     def getCardDefinitionWithExamples(self):
         results = []
@@ -126,24 +128,24 @@ class DudenFactory:
             soup = BeautifulSoup(df)
             
             # in case <li class="Bedeutung"> with sub term list
-            li_ol_li = soup.select('li > ol > li')
-            if len(li_ol_li) > 0:
-                for li in li_ol_li:
-                    beispiele = u''
-                    for h3 in li.find_all('h3'):
-                        if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
-                            beispiele = h3.parent.extract()
-                        else:
-                            h3.parent.extract()
-                    results.append((unicode(li.find('span', class_='content')), unicode(beispiele)))
-            else:
+            dfs_contents = soup.select('li > ol > li')
+            
+            if dfs_contents == []:
+                dfs_contents = soup.contents
+            
+            for item in dfs_contents:
                 beispiele = u''
-                for h3 in soup.find_all('h3'):
+                
+                for h3 in item.find_all('h3'):
                     if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
                         beispiele = h3.parent.extract()
                     else:
                         h3.parent.extract()
-                results.append((unicode(soup.find(['span', 'dd'], class_='content')), unicode(beispiele)))
+                
+                if item.name in ['li', 'dd']:
+                    item.name = 'div'
+                
+                results.append((unicode(item), unicode(beispiele)))
         
         return results
 
@@ -163,7 +165,7 @@ if __name__ == '__main__':
     lt = [item.strip() for item in open('wzd_list.txt').readlines()]
     
     # special test cases of Sound
-    lt = [u'Aenderung', u'Aktivitaet', u'Anbieter', u'andere', u'Angestellter', u'ausreichend', u'Bedienungsanleitung', u'begeistert', u'Begruendung', u'Beratung', u'Bestaetigung', u'beste_Adjektiv', u'bestimmt_Adverb', u'Betreuung', u'Deutscher', u'Einfuehrung', u'Erhoehung', u'geboten_bieten', u'gestorben', u'Hersteller', u'interkulturell', u'Kindertagesstaette', u'langweilen', u'linke', u'Manager', u'maximal', u'naechste', u'Schlaf', u'Sekretaer', u'Traum_', u'vorige', u'aktiv', u'Alkohol', u'allerdings_Adverb', u'Artikel', u'Augenblick', u'augenblicklich', u'ausgezeichnet', u'benutzen', u'Cent', u'Chemie', u'dagegen', u'danach', u'darauf', u'darueber', u'deswegen', u'Dusche', u'Fleck', u'Geburt', u'gefallen_fallen', u'Geografie', u'gern', u'Hamburger_Speise_Gericht', u'Interesse', u'interessieren', u'Interview', u'Kilometer', u'Kredit_Finanzierung_Anleihe', u'Kritik', u'kritisch', u'Kurve', u'Langeweile', u'Motor', u'Motorrad', u'nachher', u'nutzen', u'passiv', u'Politik', u'Politiker', u'positiv', u'Scheck_Zahlungsanweisung_Bon', u'selbststaendig', u'Souvenir', u'Star_Kuenstler_Beruehmtheit', u'Stress', u'tatsaechlich_sicher_gewiss_garantiert', u'ueberall', u'unbedingt_zwingend', u'unheimlich', u'vorwaerts', u'Zentimeter', u'Arbeitnehmer', u'Balkon', u'Chance', u'dadurch', u'daher', u'darum', u'Mathematik', u'negativ', u'Saison', u'alltaeglich', u'Pension', u'Abteilung']
+#     lt = [u'Aenderung', u'Aktivitaet', u'Anbieter', u'andere', u'Angestellter', u'ausreichend', u'Bedienungsanleitung', u'begeistert', u'Begruendung', u'Beratung', u'Bestaetigung', u'beste_Adjektiv', u'bestimmt_Adverb', u'Betreuung', u'Deutscher', u'Einfuehrung', u'Erhoehung', u'geboten_bieten', u'gestorben', u'Hersteller', u'interkulturell', u'Kindertagesstaette', u'langweilen', u'linke', u'Manager', u'maximal', u'naechste', u'Schlaf', u'Sekretaer', u'Traum_', u'vorige', u'aktiv', u'Alkohol', u'allerdings_Adverb', u'Artikel', u'Augenblick', u'augenblicklich', u'ausgezeichnet', u'benutzen', u'Cent', u'Chemie', u'dagegen', u'danach', u'darauf', u'darueber', u'deswegen', u'Dusche', u'Fleck', u'Geburt', u'gefallen_fallen', u'Geografie', u'gern', u'Hamburger_Speise_Gericht', u'Interesse', u'interessieren', u'Interview', u'Kilometer', u'Kredit_Finanzierung_Anleihe', u'Kritik', u'kritisch', u'Kurve', u'Langeweile', u'Motor', u'Motorrad', u'nachher', u'nutzen', u'passiv', u'Politik', u'Politiker', u'positiv', u'Scheck_Zahlungsanweisung_Bon', u'selbststaendig', u'Souvenir', u'Star_Kuenstler_Beruehmtheit', u'Stress', u'tatsaechlich_sicher_gewiss_garantiert', u'ueberall', u'unbedingt_zwingend', u'unheimlich', u'vorwaerts', u'Zentimeter', u'Arbeitnehmer', u'Balkon', u'Chance', u'dadurch', u'daher', u'darum', u'Mathematik', u'negativ', u'Saison', u'alltaeglich', u'Pension', u'Abteilung']
     
     for item in lt:
 #         print item, ':', DudenFactory(item).getSoundText()
@@ -175,5 +177,5 @@ if __name__ == '__main__':
         for (definition, examples) in df.getCardDefinitionWithExamples():
             cd = anki.CardDefinition(word, definition, examples, sound)
             f_anki_def.write(cd.makeCard())
-    
+     
     f_anki_def.close()
