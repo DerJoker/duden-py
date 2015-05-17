@@ -120,7 +120,6 @@ class DudenFactory:
     '''
     def getCardDefinitionWithExamples(self):
         results = []
-        sound = self.getSoundText()
         
         rs_slice = Rechtschreibung(self.rechtschreibung).sliceBedeutungen()
         for df in rs_slice:
@@ -136,7 +135,7 @@ class DudenFactory:
                             beispiele = h3.parent.extract()
                         else:
                             h3.parent.extract()
-                    results.append((unicode(li.find('span', class_='content')), unicode(beispiele) + '<br>' + sound))
+                    results.append((unicode(li.find('span', class_='content')), unicode(beispiele)))
             else:
                 beispiele = u''
                 for h3 in soup.find_all('h3'):
@@ -144,7 +143,7 @@ class DudenFactory:
                         beispiele = h3.parent.extract()
                     else:
                         h3.parent.extract()
-                results.append((unicode(soup.find(['span', 'dd'], class_='content')), unicode(beispiele) + '<br>' + sound))
+                results.append((unicode(soup.find(['span', 'dd'], class_='content')), unicode(beispiele)))
         
         return results
 
@@ -171,8 +170,10 @@ if __name__ == '__main__':
         print item
         word = Rechtschreibung(item).getWortText()
 #         DudenFactory(item).getDefinitions()
-        for (front, back) in DudenFactory(item).getCardDefinitionWithExamples():
-            cd = anki.CardDefinition(word, front, back)
+        df = DudenFactory(item)
+        sound = df.getSoundText()
+        for (definition, examples) in df.getCardDefinitionWithExamples():
+            cd = anki.CardDefinition(word, definition, examples, sound)
             f_anki_def.write(cd.makeCard())
     
     f_anki_def.close()

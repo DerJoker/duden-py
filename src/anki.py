@@ -30,10 +30,10 @@ class Card:
 
 class CardDefinition(Card):
     
-    def __init__(self, word, definition, examples_with_sound):
+    def __init__(self, word, definition, examples, sound):
         # front type Cloze
         self.front = u'{{c1::' + word + u'}} : ' + definition
-        self.back = examples_with_sound
+        self.back = examples + u'<br>' + sound
 
 class CardImg:
     
