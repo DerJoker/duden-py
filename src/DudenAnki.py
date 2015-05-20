@@ -5,6 +5,42 @@ import anki
 from bs4 import BeautifulSoup
 from duden import Rechtschreibung
 
+'''
+Function
+'''
+
+class Pronunciation:
+    
+    def __init__(self, html, rechtschreibung):
+        self.html = html
+        self.rechtschreibung = rechtschreibung
+        self.links = {}
+    
+    def replace(self):
+        '''
+        self -> str
+        
+        Replace the following content (span) with Anki Sound Format [sound:(rechtschreibung)_IDxxx_xxx.mp3]
+        
+        <span class="audio" title="© Aussprachedatenbank der ARD">...</span>
+        '''
+        soup = BeautifulSoup(self.html)
+        
+        # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
+        for span in soup.find_all('span', class_='audio'):
+            # mp3 link
+            link = span.find('a', text='Als mp3 abspielen')['href']
+            # local name
+            text = self.rechtschreibung + '_' + link.split('/')[-1]
+            # at the same time update mp3 links
+            self.links[text] = link
+            span.replace_with('[sound:' + text + ']')
+        
+        return unicode(soup)
+    
+    def getLinks(self):
+        return self.links
+
 class DudenFactory:
     
     def __init__(self, rechtschreibung):
