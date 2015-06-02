@@ -80,52 +80,11 @@ class CardIdiom:
     
 class CardExample(Card):
     
-    def __init__(self, rechtschreibung, example, word, definition, pron):
+    def __init__(self, rechtschreibung, example, word, definition, sound):
         
+        self.front = u'<div class="' + rechtschreibung + u'">' + example + u'</div>'
+        self.back = word + u' : ' + definition + u'<br>' + sound
         self.valid = True
-        self.rechtschreibung = self.example = self.word = self.definition = self.pron = ''
-        
-        if isValidString(rechtschreibung) and isValidString(example):
-            self.rechtschreibung = rechtschreibung
-            self.example = example
-            if isValidString(word) and isValidString(definition):
-                self.word = word
-                self.definition = definition
-            if  isValidString(pron):
-                self.pron = pron
-        else:
-            self.valid = False
-    
-    def buildFrontStr(self):
-        self.front = '<div class="' + self.rechtschreibung + '">' + self.example + '</div>'
-        self.front = self.front.replace('\n','')
-    
-    def buildBackStr(self):
-        self.back = ''
-        if self.word != '' and self.definition != '':
-            self.back += self.word + ' : ' + self.definition
-        if self.pron != '':
-            self.back += '<br /><div>[sound:' + self.pron + ']</div>'
-        self.back = self.back.replace('\n','')
-    
-    '''
-    return string
-    
-    Q: example
-    A: word : definition
-       pron
-    '''
-    def printCardExample(self):
-        s = ''
-        if self.isValid():
-            s_front = self.example
-            s_back = ''
-            if self.word != '' and self.definition != '':
-                s_back += self.word + ' : ' + self.definition + '<br>'
-            if self.pron != '':
-                s_back += '<div>[sound:' + self.pron + ']</div>'
-            s = '<div>' + s_front + '</div>\t<div>' + s_back + '</div>\n\n'
-        return s.encode('utf-8')
 
 '''
 UnitTest
