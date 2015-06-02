@@ -233,7 +233,7 @@ if __name__ == '__main__':
     lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
     
     # WZD in wzd_list.txt
-#     lt = [item.strip() for item in open('wzd_list.txt').readlines()]
+    lt = [item.strip() for item in open('wzd_list.txt').readlines()]
     
     # special test cases of Sound
 #     lt = [u'Aenderung', u'Aktivitaet', u'Anbieter', u'andere', u'Angestellter', u'ausreichend', u'Bedienungsanleitung', u'begeistert', u'Begruendung', u'Beratung', u'Bestaetigung', u'beste_Adjektiv', u'bestimmt_Adverb', u'Betreuung', u'Deutscher', u'Einfuehrung', u'Erhoehung', u'geboten_bieten', u'gestorben', u'Hersteller', u'interkulturell', u'Kindertagesstaette', u'langweilen', u'linke', u'Manager', u'maximal', u'naechste', u'Schlaf', u'Sekretaer', u'Traum_', u'vorige', u'aktiv', u'Alkohol', u'allerdings_Adverb', u'Artikel', u'Augenblick', u'augenblicklich', u'ausgezeichnet', u'benutzen', u'Cent', u'Chemie', u'dagegen', u'danach', u'darauf', u'darueber', u'deswegen', u'Dusche', u'Fleck', u'Geburt', u'gefallen_fallen', u'Geografie', u'gern', u'Hamburger_Speise_Gericht', u'Interesse', u'interessieren', u'Interview', u'Kilometer', u'Kredit_Finanzierung_Anleihe', u'Kritik', u'kritisch', u'Kurve', u'Langeweile', u'Motor', u'Motorrad', u'nachher', u'nutzen', u'passiv', u'Politik', u'Politiker', u'positiv', u'Scheck_Zahlungsanweisung_Bon', u'selbststaendig', u'Souvenir', u'Star_Kuenstler_Beruehmtheit', u'Stress', u'tatsaechlich_sicher_gewiss_garantiert', u'ueberall', u'unbedingt_zwingend', u'unheimlich', u'vorwaerts', u'Zentimeter', u'Arbeitnehmer', u'Balkon', u'Chance', u'dadurch', u'daher', u'darum', u'Mathematik', u'negativ', u'Saison', u'alltaeglich', u'Pension', u'Abteilung']
@@ -244,18 +244,18 @@ if __name__ == '__main__':
     Card Definition
     '''
     
-    f_anki_def = open('anki_definition_zd.txt', 'w')
-    
-    for item in lt:
-        print item
-        word = Rechtschreibung(item).getWortText()
-        df = DudenFactory(item)
-        sound = df.getSoundText()
-        for (definition, examples) in df.getCardDefinitionWithExamples():
-            cd = anki.CardDefinition(word, definition, examples, sound)
-            f_anki_def.write(cd.makeCard())
-      
-    f_anki_def.close()
+#     f_anki_def = open('anki_definition_zd.txt', 'w')
+#     
+#     for item in lt:
+#         print item
+#         word = Rechtschreibung(item).getWortText()
+#         df = DudenFactory(item)
+#         sound = df.getSoundText()
+#         for (definition, examples) in df.getCardDefinitionWithExamples():
+#             cd = anki.CardDefinition(word, definition, examples, sound)
+#             f_anki_def.write(cd.makeCard())
+#       
+#     f_anki_def.close()
     
     '''
     Card Example
