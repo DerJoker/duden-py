@@ -229,8 +229,6 @@ UnitTest
 
 if __name__ == '__main__':
     
-#     f_anki_def = open('anki_definition_zd.txt', 'w')
-    
     # Rechtschreibung list for test
     lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
     
@@ -242,16 +240,23 @@ if __name__ == '__main__':
     
     random.shuffle(lt)
     
+    '''
+    Card Definition
+    '''
+    
+    f_anki_def = open('anki_definition_zd.txt', 'w')
+    
     for item in lt:
-#         print item, ':', DudenFactory(item).getSoundText()
         print item
         word = Rechtschreibung(item).getWortText()
-#         DudenFactory(item).getDefinitions()
-        print DudenFactory(item).getCardExamples()
-#         df = DudenFactory(item)
-#         sound = df.getSoundText()
-#         for (definition, examples) in df.getCardDefinitionWithExamples():
-#             cd = anki.CardDefinition(word, definition, examples, sound)
-#             f_anki_def.write(cd.makeCard())
-#      
-#     f_anki_def.close()
+        df = DudenFactory(item)
+        sound = df.getSoundText()
+        for (definition, examples) in df.getCardDefinitionWithExamples():
+            cd = anki.CardDefinition(word, definition, examples, sound)
+            f_anki_def.write(cd.makeCard())
+      
+    f_anki_def.close()
+    
+    '''
+    Card Example
+    '''
