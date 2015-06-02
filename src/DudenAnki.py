@@ -260,3 +260,16 @@ if __name__ == '__main__':
     '''
     Card Example
     '''
+    
+    f_anki_examples = open('anki_examples_zd.txt', 'w')
+    
+    for item in lt:
+        print item
+        word = Rechtschreibung(item).getWortText()
+        df = DudenFactory(item)
+        sound = df.getSoundText()
+        for (example, definition) in df.getCardExamples():
+            cd = anki.CardExample(item, example, word, definition, sound)
+            f_anki_examples.write(cd.makeCard())
+      
+    f_anki_examples.close()
