@@ -8,7 +8,7 @@ import duden
 
 from duden import Rechtschreibung
 from duden import Analyser
-from anki import CardExample
+from card import CardExample
 
 '''
 functions

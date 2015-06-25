@@ -7,9 +7,9 @@ from bs4 import BeautifulSoup
 
 import config
 import tools
-from anki import CardImg
-from anki import CardIdiom
-from anki import CardExample
+from card import CardImg
+from card import CardIdiom
+from card import CardExample
 
 # sound download path
 _path_duden_mp3 = config._path_duden_mp3
