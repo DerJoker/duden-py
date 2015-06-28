@@ -27,7 +27,7 @@ class Card:
     def makeCard(self):
         self.front = self.front.replace('\n','')
         self.back = self.back.replace('\n','')
-        s = u'<div class="front">' + self.front + u'</div>\t<div class="back">' + self.back + u'</div>\n\n'
+        s = u'<div class="front">' + self.front + u'</div>\t<div class="back">' + self.back + u'</div>'
         return s.encode('utf-8')
 
 class CardDefinition(Card):

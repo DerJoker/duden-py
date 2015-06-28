@@ -43,6 +43,7 @@ for item in lt:
     for (example, definition) in rs.getTupleExampleAndDefinition():
         def_misc = definition + u'<br >' + sound
         cd = card.CardExample(item, example, word, def_misc)
-        f_anki_examples.write(cd.makeCard())
-  
+        f_anki_examples.write(cd.makeCard() + '\n')
+ 
 f_anki_examples.close()
+
