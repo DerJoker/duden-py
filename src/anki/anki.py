@@ -7,7 +7,7 @@ from duden import Rechtschreibung
 
 # Rechtschreibung list for test
 lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', \
-      u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+      u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung', u'Abteilung']
 
 # WZD in wzd_list.txt
 # lt = [item.strip() for item in open('wzd_list.txt').readlines()]
@@ -47,3 +47,15 @@ for item in lt:
  
 f_anki_examples.close()
 
+f_anki_examples2 = open('anki_examples_zd2.txt', 'w')
+with open('anki_examples_zd.txt') as f:
+    # new line before image
+    s = f.read().replace('<span class="term_img">', '<br ><span class="term_img">')
+    
+    soup = BeautifulSoup(s)
+    
+    # Sound
+    
+    
+f_anki_examples2.write(s)
+f_anki_examples2.close()
