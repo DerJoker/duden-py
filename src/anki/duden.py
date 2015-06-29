@@ -42,7 +42,7 @@ class Rechtschreibung:
     Return slice Aussprache.
     '''
     def sliceAussprache(self):
-        return unicode(self.soup.find('div', class_='field-name-field-pronunciation'))
+        return unicode(self.soup.find('div', class_='field-name-field-pronunciation').find('dl'))
     
     '''
     -> [str]
