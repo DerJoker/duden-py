@@ -45,6 +45,25 @@ class Rechtschreibung:
         return unicode(self.soup.find('div', class_='field-name-field-pronunciation').find('dl'))
     
     '''
+    -> str (unicode)
+    
+    Return anki sound.
+    '''
+    def getAnkiSound(self):
+        soup = BeautifulSoup(self.sliceAussprache())
+        
+        # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
+        for span in soup.find_all('span', class_='audio'):
+            mp3_link = span.find('a', text='Als mp3 abspielen')['href']
+            # at the same time add to list (mp3Links)
+#             self.mp3Links.append(mp3_link)
+            span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
+            del span['title']
+            del span['class']
+        
+        return unicode(soup)
+    
+    '''
     -> [str]
     
     Return list of Bedeutungen / definitions with examples, if there is.

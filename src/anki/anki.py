@@ -40,6 +40,7 @@ for item in lt:
     rs = Rechtschreibung(item)
     word = rs.getWortText()
     sound = rs.sliceAussprache()
+    sound = rs.getAnkiSound()
     for (example, definition) in rs.getTupleExampleAndDefinition():
         def_misc = definition + u'<br >' + sound
         cd = card.CardExample(item, example, word, def_misc)
@@ -50,7 +51,7 @@ f_anki_examples.close()
 f_anki_examples2 = open('anki_examples_zd2.txt', 'w')
 with open('anki_examples_zd.txt') as f:
     # new line before image
-    s = f.read().replace('<span class="term_img">', '<br ><span class="term_img">')
+    s = f.read()
     
     soup = BeautifulSoup(s)
     
@@ -63,6 +64,9 @@ with open('anki_examples_zd.txt') as f:
         mp3_link = span.find('a', text='Als mp3 abspielen')['href']
         span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
         del span['title']
+        del span['class']
     
-f_anki_examples2.write(str(soup))
+    s = str(soup).replace('<span class="term_img">', '<br ><span class="term_img">').replace('<div class="back">', '\t<div class="back">')
+    
+f_anki_examples2.write(s)
 f_anki_examples2.close()
