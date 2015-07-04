@@ -58,6 +58,14 @@ with open('anki_examples_zd.txt') as f:
     
     soup = BeautifulSoup(s)
     
+    # Image
+    for span_img in soup.findAll('span', class_='term_img'):
+        src = span_img.find('img')['src'].split('/')[-1]
+        f_anki_links.write(src + u'\n')
+        meta = span_img.find('img')['meta-bu']
+        span_img.string = ''
+        span_img.append(BeautifulSoup('<img src="' + src + '"><div>' + meta + '</div>'))
+    
     # Sound
     
     # div class="Aussprache"
