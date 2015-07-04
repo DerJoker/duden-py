@@ -24,5 +24,5 @@ def download(url,local):
     if r != '':
         with open(local,'w') as f:
             f.write(r)
-        print 'download successfully!'
-    else: print 'download failed!'
+        print url, 'download successfully!'
+    else: print url, 'download failed!'
