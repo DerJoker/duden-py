@@ -44,6 +44,10 @@ class Rechtschreibung:
     def sliceAussprache(self):
         return unicode(self.soup.find('div', class_='field-name-field-pronunciation').find('dl'))
     
+    def getSoundLinks(self):
+        soup = BeautifulSoup(self.sliceAussprache())
+        return [item['href'] for item in soup.find_all('a', text='Als mp3 abspielen')]
+    
     '''
     -> str (unicode)
     

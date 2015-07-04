@@ -12,6 +12,8 @@ lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beoba
 # WZD in wzd_list.txt
 # lt = [item.strip() for item in open('wzd_list.txt').readlines()]
 
+f_anki_links = open('links.txt', 'w')
+
 '''
 Card Definition
 '''
@@ -39,7 +41,8 @@ for item in lt:
     print item
     rs = Rechtschreibung(item)
     word = rs.getWortText()
-    sound = rs.sliceAussprache()
+    for link in rs.getSoundLinks():
+        f_anki_links.write(link + u'\n')
     sound = rs.getAnkiSound()
     for (example, definition) in rs.getTupleExampleAndDefinition():
         def_misc = definition + u'<br >' + sound
@@ -70,3 +73,5 @@ with open('anki_examples_zd.txt') as f:
     
 f_anki_examples2.write(s)
 f_anki_examples2.close()
+
+f_anki_links.close()
