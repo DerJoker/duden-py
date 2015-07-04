@@ -53,7 +53,7 @@ f_anki_examples.close()
 
 f_anki_examples2 = open('anki_examples_zd2.txt', 'w')
 with open('anki_examples_zd.txt') as f:
-    # new line before image
+    
     s = f.read()
     
     soup = BeautifulSoup(s)
@@ -69,6 +69,7 @@ with open('anki_examples_zd.txt') as f:
         del span['title']
         del span['class']
     
+    # new line before image
     s = str(soup).replace('<span class="term_img">', '<br ><span class="term_img">').replace('<div class="back">', '\t<div class="back">')
     
 f_anki_examples2.write(s)
