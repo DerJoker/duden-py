@@ -2,16 +2,12 @@
 
 import urllib2
 
-CODEC = 'UTF-8'
-TIMEOUT = 10
-TRY = 3
-
-def read(url):
+def read(url, retries=3, timeouts=10):
     count = 0
     r = ''
-    while (count < TRY and r == ''):
+    while (count < retries and r == ''):
         try:
-            r = urllib2.urlopen(url, timeout=TIMEOUT).read()
+            r = urllib2.urlopen(url, timeout=timeouts).read()
         except Exception,e:
             print e
             r = ''
