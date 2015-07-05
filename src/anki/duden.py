@@ -185,34 +185,10 @@ class Rechtschreibung:
     def getTupleExampleAndDefinition(self):
         results = []
         
-        rs_slice = self.sliceBedeutungen()
-        for df in rs_slice:
-            soup = BeautifulSoup(df)
-            
-            # in case <li class="Bedeutung"> with sub term list
-            dfs_contents = soup.select('li > ol > li')
-            
-            if dfs_contents == []:
-                dfs_contents = soup.contents
-            
-            for item in dfs_contents:
-                beispiele = []
-                
-                for h3 in item.find_all('h3'):
-                    if h3.parent.has_attr('class'):
-                        if h3.parent['class'] == [u'Beispiele']:
-                            beispiele = h3.parent.extract().find_all('span', class_='beispiel')
-                        # keep Aussprache and Grammatik
-                        elif h3.parent['class'] not in [[u'Aussprache'], [u'Grammatik']]:
-                            h3.parent.extract()
-                    else:
-                        h3.parent.extract()
-                
-                if item.name in ['li', 'dd']:
-                    item.name = 'div'
-                
-                if beispiele != []:
-                    results.extend([(unicode(beispiel), unicode(item)) for beispiel in beispiele])
+        for (deinition, examples) in self.getTupleDefinitionAndExamples():
+            beispiele = BeautifulSoup(examples).find_all('span', class_='beispiel')
+            if beispiele != []:
+                results.extend([(unicode(beispiel), unicode(deinition)) for beispiel in beispiele])
         
         return results
 
