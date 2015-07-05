@@ -59,7 +59,7 @@ with open('anki_examples_zd.txt') as f:
     soup = BeautifulSoup(s)
     
     # Image
-    for span_img in soup.findAll('span', class_='term_img'):
+    for span_img in soup.find_all('span', class_='term_img'):
         src = span_img.find('img')['src']
         f_anki_links.write(src + u'\n')
         src_local = src.split('/')[-1]
@@ -70,10 +70,10 @@ with open('anki_examples_zd.txt') as f:
     # Sound
     
     # div class="Aussprache"
-    
-    # span class="audio"
-    for span in soup.findAll('span', class_='audio'):
+    for span in soup.find_all('span', class_='audio'):
+        print 'something'
         mp3_link = span.find('a', text='Als mp3 abspielen')['href']
+        print mp3_link
         span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
         del span['title']
         del span['class']

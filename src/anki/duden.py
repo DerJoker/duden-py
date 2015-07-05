@@ -80,6 +80,7 @@ class Rechtschreibung:
      + Grammatik
      + Herkunft
      + Wendungen
+     + Gebrauch
     
     Among which, what could be of interest are Beispiele and Wendungen.
     '''
@@ -160,8 +161,12 @@ class Rechtschreibung:
                 beispiele = u''
                 
                 for h3 in item.find_all('h3'):
-                    if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
-                        beispiele = h3.parent.extract()
+                    if h3.parent.has_attr('class'):
+                        if h3.parent['class'] == [u'Beispiele']:
+                            beispiele = h3.parent.extract()
+                        # keep Aussprache and Grammatik
+                        elif h3.parent['class'] not in [[u'Aussprache'], [u'Grammatik']]:
+                            h3.parent.extract()
                     else:
                         h3.parent.extract()
                 
@@ -194,8 +199,12 @@ class Rechtschreibung:
                 beispiele = []
                 
                 for h3 in item.find_all('h3'):
-                    if h3.parent.has_attr('class') and h3.parent['class'] == [u'Beispiele']:
-                        beispiele = h3.parent.extract().find_all('span', class_='beispiel')
+                    if h3.parent.has_attr('class'):
+                        if h3.parent['class'] == [u'Beispiele']:
+                            beispiele = h3.parent.extract().find_all('span', class_='beispiel')
+                        # keep Aussprache and Grammatik
+                        elif h3.parent['class'] not in [[u'Aussprache'], [u'Grammatik']]:
+                            h3.parent.extract()
                     else:
                         h3.parent.extract()
                 
