@@ -2,12 +2,12 @@
 
 import urllib2
 
-def read(url, retries=3, timeouts=10):
+def read(url, retries=3, timeout=10):
     count = 0
     r = ''
     while (count < retries and r == ''):
         try:
-            r = urllib2.urlopen(url, timeout=timeouts).read()
+            r = urllib2.urlopen(url, timeout=timeout).read()
         except Exception,e:
             print e
             r = ''
@@ -22,3 +22,10 @@ def download(url,local):
             f.write(r)
         print url, 'download successfully!'
     else: print url, 'download failed!'
+
+'''
+UnitTest
+'''
+
+if __name__ == '__main__':
+    print read('http://www.duden.de/rechtschreibung/dauern_waehren_durchhalten')
