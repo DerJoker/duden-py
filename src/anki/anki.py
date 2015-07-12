@@ -79,7 +79,8 @@ with open('anki_examples_zd.txt') as f:
         del span['class']
     
     # new line before image, and tab before card back side
-    s = str(soup).replace('<span class="term_img">', '<br ><span class="term_img">').replace('<div class="back">', '\t<div class="back">')
+    s = (str(soup).replace('<span class="term_img">', '<br ><span class="term_img">')
+         .replace('<div class="back">', '\t<div class="back">'))
     
 f_anki_examples2.write(s)
 f_anki_examples2.close()
