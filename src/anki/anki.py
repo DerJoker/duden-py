@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from duden import Rechtschreibung
 
 # Rechtschreibung list for test
-lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', \
+lt = [u'verheerend', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', 
       u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung', u'Abteilung', u'Pension']
 
 # WZD in wzd_list.txt
