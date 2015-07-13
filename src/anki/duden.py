@@ -10,8 +10,22 @@ Class
 
 class Duden:
     
-    def __init__(self):
-        print 'Duden'
+    URLDUDENONLINE = 'http://www.duden.de/suchen/dudenonline/'
+    
+    def __init__(self, wort):
+        self.wort = wort
+        self.url = Duden.URLDUDENONLINE + wort
+    
+    def getRechtschreibung(self):
+        '''
+        Return list of Rechtschreibung, which (exactly) equals to the search word
+        
+        self -> [rechtschreibung, ...]
+        '''
+        html = tools.read(self.url)
+        soup = BeautifulSoup(html)
+#         return [item.text for item in soup.find_all('h3')]
+        return soup.find_all('a', text=self.wort.decode('utf-8'))
 
 class Rechtschreibung:
     
@@ -198,11 +212,20 @@ UnitTest
 '''
 
 if __name__ == '__main__':
-#     f_log = open('log.txt','w')
+    
+    # Unit Test Duden
+    '''
+    stän­dig: in last page of the result -> go throught all pages
+    '''
+    lt_wort = ['Abteilung', 'Magen', 'stän­dig', 'vollständig', 'Maß', 'dauern', 'behandln', 'aufweisen']
+    
+    for item in lt_wort:
+        duden = Duden(item)
+        print item
+        print duden.getRechtschreibung()
     
     # Rechtschreibung list for test
-    lt = [u'Chip', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe', u'beobachten', \
-          u'modern_neu_modisch', u'schmuck', u'drauf', u'Anleitung']
+    lt = [u'Chip', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe']
     
     for item in lt:
         rs = Rechtschreibung(item)
