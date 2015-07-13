@@ -28,4 +28,5 @@ UnitTest
 '''
 
 if __name__ == '__main__':
-    print read('http://www.duden.de/rechtschreibung/dauern_waehren_durchhalten')
+#     print read('http://www.duden.de/rechtschreibung/dauern_waehren_durchhalten')
+    print read('http://www.duden.de/suchen/dudenonline/stän­dig')
