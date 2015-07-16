@@ -25,7 +25,7 @@ class Duden:
         html = tools.read(self.url)
         soup = BeautifulSoup(html)
 #         return [item.text for item in soup.find_all('h3')]
-        return soup.find_all('a', text=self.wort.decode('utf-8'))
+        return [item['href'].split('/')[-1] for item in soup.find_all('a', text=self.wort.decode('utf-8'))]
 
 class Rechtschreibung:
     
