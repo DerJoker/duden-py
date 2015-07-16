@@ -1,6 +1,7 @@
 # coding: UTF-8
 
 import urllib2
+import logging
 
 def read(url, retries=3, timeout=10):
     count = 0
@@ -9,7 +10,7 @@ def read(url, retries=3, timeout=10):
         try:
             r = urllib2.urlopen(url, timeout=timeout).read()
         except Exception,e:
-            print e
+            logging.info(e)
             r = ''
         count += 1
     return r
@@ -20,8 +21,8 @@ def download(url,local):
     if r != '':
         with open(local,'w') as f:
             f.write(r)
-        print url, 'download successfully!'
-    else: print url, 'download failed!'
+        logging.info(url + ' download successfully!')
+    else: logging.info(url + ' download failed!')
 
 '''
 UnitTest
