@@ -10,3 +10,5 @@ src/test.py
 *.db
 
 *.html
+
+*.log
