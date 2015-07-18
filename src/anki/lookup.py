@@ -2,8 +2,11 @@
 
 import csv
 import os
+import logging
 
 from duden import Duden, Rechtschreibung
+
+logging.basicConfig(filename='anki_lookup.log',level=logging.DEBUG)
 
 # file name
 fn = 'anki.csv'
@@ -68,8 +71,8 @@ with open(fn_bak) as csv_bak:
         writer.writeheader()
         
         for row in reader:
-            print row['id_wt']
+            logging.info(row['id_wt'])
             rows =  AnkiRow(row).extend()
-            print rows
+            logging.info(rows)
 #             rows = [item.decode('utf-8') for row in rows for item in row]
             writer.writerows(rows)
