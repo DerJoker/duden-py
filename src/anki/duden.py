@@ -33,8 +33,6 @@ class Rechtschreibung:
     
     URLRECHTSCHREIBUNG = 'http://www.duden.de/rechtschreibung/'
     
-    __links = {}    # dict {text:link, ...}
-    
     def __init__(self, d_rechtschreibung):
         self.rechtschreibung = d_rechtschreibung
         self.url = Rechtschreibung.URLRECHTSCHREIBUNG + d_rechtschreibung
@@ -42,6 +40,8 @@ class Rechtschreibung:
         self.html = tools.read(self.url)
         
         self.soup = BeautifulSoup(self.html)
+        
+        self.links = {}    # dict {text:link, ...}
     
     '''
     -> str (unicode)
@@ -221,8 +221,8 @@ class Rechtschreibung:
         # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
         for span in soup.find_all('span', class_='audio'):
             mp3_link = span.find('a', text='Als mp3 abspielen')['href']
-            # at the same time add link to dict __links
-            self.__links[mp3_link.split('/')[-1]] = mp3_link
+            # at the same time add link to dict links
+            self.links[mp3_link.split('/')[-1]] = mp3_link
             span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
             del span['title']
             del span['class']

@@ -6,10 +6,8 @@ from duden import Rechtschreibung
 
 class AnkiRechtschreibung(Rechtschreibung):
     
-    __links = {}    # dict {text:link, ...} (mp3, jpg etc.)
-    
     def getLinks(self):
-        return self.__links
+        return self.links
     
     def getCardExample(self):
         '''
@@ -44,8 +42,8 @@ class AnkiRechtschreibung(Rechtschreibung):
         # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
         for span in soup.find_all('span', class_='audio'):
             mp3_link = span.find('a', text='Als mp3 abspielen')['href']
-            # at the same time add link to dict __links
-            self.__links[mp3_link.split('/')[-1]] = mp3_link
+            # at the same time add link to dict links
+            self.links[mp3_link.split('/')[-1]] = mp3_link
             span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
             del span['title']
             del span['class']
