@@ -11,6 +11,16 @@ class AnkiRechtschreibung(Rechtschreibung):
     def getLinks(self):
         return self.__links
     
+    def getCardExample(self):
+        '''
+        return list of (example/front, definition/back)
+        '''
+        aussprache = self.sliceAussprache()
+        
+        # add aussprache to back, and transform to anki sound text
+        return [(beispiel, self.getWortText() + ' : ' + self._handleSoundText(bedeutung + '<br >' + aussprache))
+                for (beispiel, bedeutung) in self.getTupleExampleAndDefinition()]
+    
     def _handleSoundText(self, text):
         '''
         handle sound text (duden html -> anki format)
@@ -56,9 +66,8 @@ def _UnitTest_AnkiRechtschreibung():
         ars = AnkiRechtschreibung(item)
         
         print item, ':', ars.getWortText()
-        print ars._handleSoundText(ars.sliceAussprache())
+        print ars.getCardExample()
         print ars.getLinks()
-        print ars.getTupleExampleAndDefinition()
 
 if __name__ == '__main__':
     
