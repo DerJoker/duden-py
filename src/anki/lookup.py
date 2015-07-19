@@ -3,6 +3,7 @@
 import csv
 import os
 import logging
+import copy
 
 from duden import Duden
 from anki import AnkiRechtschreibung
@@ -52,10 +53,11 @@ class AnkiRow:
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
                 for (beispiel, bedeutung) in ls_tbd:
-                    self.dt_anki['beispiel'] = beispiel.encode('utf-8')
-                    self.dt_anki['bedeutung'] = bedeutung.encode('utf-8')
+                    dt_anki = copy.copy(self.dt_anki)
+                    dt_anki['beispiel'] = beispiel.encode('utf-8')
+                    dt_anki['bedeutung'] = bedeutung.encode('utf-8')
                     
-                    res.append(self.dt_anki)
+                    res.append(dt_anki)
         
         # updated, return as it is
         else: print res.append(self.dt_anki)
