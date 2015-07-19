@@ -37,7 +37,8 @@ class Rechtschreibung:
         self.rechtschreibung = d_rechtschreibung
         self.url = Rechtschreibung.URLRECHTSCHREIBUNG + d_rechtschreibung
         
-        self.html = tools.read(self.url)
+        self.html = tools.read(self.url).replace('href="/rechtschreibung/', 
+                                                 'href="http://www.duden.de/rechtschreibung/')
         
         self.soup = BeautifulSoup(self.html)
         
