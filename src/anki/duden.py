@@ -190,14 +190,13 @@ class Rechtschreibung:
     Return list of 2 strings (Tuple) as example and definition    
     '''
     def getTupleExampleAndDefinition(self):
-        results = []
+        res = []
         
         for (deinition, examples) in self.getTupleDefinitionAndExamples():
-            beispiele = BeautifulSoup(examples).find_all('span', class_='beispiel')
-            if beispiele != []:
-                results.extend([(unicode(beispiel), unicode(deinition)) for beispiel in beispiele])
+            for beispiel in BeautifulSoup(examples).find_all('span', class_='beispiel'):
+                res.append((unicode(beispiel), unicode(deinition)))
         
-        return results
+        return res
     
     def __handleSoundText(self, text):
         '''
