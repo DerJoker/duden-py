@@ -211,9 +211,8 @@ class Rechtschreibung:
 UnitTest
 '''
 
-if __name__ == '__main__':
+def _UnitTest_Duden():
     
-    # Unit Test Duden
     '''
     stän­dig: in last page of the result -> go throught all pages
     '''
@@ -223,6 +222,8 @@ if __name__ == '__main__':
         duden = Duden(item)
         print item
         print duden.getRechtschreibung()
+
+def _UnitTest_Rechtschreibung():
     
     # Rechtschreibung list for test
     lt = [u'Chip', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe']
@@ -232,3 +233,8 @@ if __name__ == '__main__':
         
         print item, ':', rs.getWortText()
         print rs.getTupleExampleAndDefinition()
+
+if __name__ == '__main__':
+    
+    _UnitTest_Duden()
+    _UnitTest_Rechtschreibung()
