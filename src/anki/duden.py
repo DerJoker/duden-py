@@ -1,5 +1,7 @@
 # coding: UTF-8
 
+import logging
+
 from bs4 import BeautifulSoup
 
 import tools
@@ -30,6 +32,8 @@ class Duden:
 class Rechtschreibung:
     
     URLRECHTSCHREIBUNG = 'http://www.duden.de/rechtschreibung/'
+    
+    __links = {}    # dict {text:link, ...}
     
     def __init__(self, d_rechtschreibung):
         self.rechtschreibung = d_rechtschreibung
@@ -68,18 +72,7 @@ class Rechtschreibung:
     Return anki sound.
     '''
     def getAnkiSound(self):
-        soup = BeautifulSoup(self.sliceAussprache())
-        
-        # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
-        for span in soup.find_all('span', class_='audio'):
-            mp3_link = span.find('a', text='Als mp3 abspielen')['href']
-            # at the same time add to list (mp3Links)
-#             self.mp3Links.append(mp3_link)
-            span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
-            del span['title']
-            del span['class']
-        
-        return unicode(soup)
+        return self.__handleSoundText(self.sliceAussprache())
     
     '''
     -> [str]
@@ -205,13 +198,44 @@ class Rechtschreibung:
                 results.extend([(unicode(beispiel), unicode(deinition)) for beispiel in beispiele])
         
         return results
+    
+    def __handleSoundText(self, text):
+        '''
+        handle sound text (duden html -> anki)
+        
+        e.g.
+        ...
+        <span class="audio" title="© Aussprachedatenbank der ARD">
+            ...
+            <a target="_blank" title="Als mp3 abspielen - © Aussprachedatenbank der ARD" 
+            href="http://www.duden.de/_media_/audio/ID4116703_498035746.mp3">Als mp3 abspielen</a>
+            ...
+        </span>
+        ...
+        ->
+        ...
+        [sound:ID4116703_498035746.mp3]
+        ...
+        '''
+        soup = BeautifulSoup(text)
+        
+        # <span class="audio" title="© Aussprachedatenbank der ARD"></span>
+        for span in soup.find_all('span', class_='audio'):
+            mp3_link = span.find('a', text='Als mp3 abspielen')['href']
+            # at the same time add link to dict __links
+            self.__links[mp3_link.split('/')[-1]] = mp3_link
+            span.string = '[sound:' + mp3_link.split('/')[-1] + ']'
+            del span['title']
+            del span['class']
+        
+        return unicode(soup)
 
 
 '''
 UnitTest
 '''
 
-def _UnitTest_Duden():
+def __UnitTest_Duden():
     
     '''
     stän­dig: in last page of the result -> go throught all pages
@@ -223,7 +247,7 @@ def _UnitTest_Duden():
         print item
         print duden.getRechtschreibung()
 
-def _UnitTest_Rechtschreibung():
+def __UnitTest_Rechtschreibung():
     
     # Rechtschreibung list for test
     lt = [u'Chip', u'Taetigkeit', u'Blickwinkel', u'scheiden', u'Ehe']
@@ -232,9 +256,10 @@ def _UnitTest_Rechtschreibung():
         rs = Rechtschreibung(item)
         
         print item, ':', rs.getWortText()
+        print rs.getAnkiSound()
         print rs.getTupleExampleAndDefinition()
 
 if __name__ == '__main__':
     
-    _UnitTest_Duden()
-    _UnitTest_Rechtschreibung()
+#     __UnitTest_Duden()
+    __UnitTest_Rechtschreibung()
