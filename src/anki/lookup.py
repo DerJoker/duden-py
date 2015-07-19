@@ -4,7 +4,8 @@ import csv
 import os
 import logging
 
-from duden import Duden, Rechtschreibung
+from duden import Duden
+from anki import AnkiRechtschreibung
 
 logging.basicConfig(filename='anki_lookup.log',level=logging.DEBUG)
 
@@ -42,11 +43,11 @@ class AnkiRow:
                 self.dt_anki['id_rs'] = str(i)
                 self.dt_anki['rechtschreibung'] = ls_rs[i]
                 
-                rechtschreibung = Rechtschreibung(ls_rs[i])
+                rechtschreibung = AnkiRechtschreibung(ls_rs[i])
                 # zertifikat not implemented yet, default ''
                 
                 # list tuple (beispiel, bedeutung)
-                ls_tbd= rechtschreibung.getTupleExampleAndDefinition()
+                ls_tbd= rechtschreibung.getCardExample()
                 if len(ls_tbd) == 0: # keep this record/row even if empty
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
