@@ -22,6 +22,7 @@ class AnkiRow:
     
     def __init__(self, dt_anki):
         self.dt_anki = dt_anki
+        self.links = {}
     
     def extend(self):
         '''
@@ -49,6 +50,8 @@ class AnkiRow:
                 
                 # list tuple (beispiel, bedeutung)
                 ls_tbd = rechtschreibung.getCardExample()
+                self.links.update(rechtschreibung.getLinks())
+                
                 if len(ls_tbd) == 0: # keep this record/row even if empty
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
@@ -77,9 +80,10 @@ with open(fn_bak) as csv_bak:
         
         for row in reader:
             logging.info(row['id_wt'])
-            rows =  AnkiRow(row).extend()
-            logging.info(rows)
-#             rows = [item.decode('utf-8') for row in rows for item in row]
+            ar = AnkiRow(row)
+            rows =  ar.extend()
+            for value in ar.links.values():
+                f_anki_links.write(value + '\n')
             writer.writerows(rows)
 
 f_anki_links.close()
