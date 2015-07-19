@@ -16,7 +16,7 @@ class AnkiRechtschreibung(Rechtschreibung):
         aussprache = self.sliceAussprache()
         
         # add aussprache to back, and transform to anki sound text
-        return [(beispiel, self.getWortText() + ' : ' + self._handleSoundText(bedeutung + '<br >' + aussprache))
+        return [(beispiel, self.getWortText() + ' : ' + self._handleSoundText(self._handleImageText(bedeutung) + '<br >' + aussprache))
                 for (beispiel, bedeutung) in self.getTupleExampleAndDefinition()]
     
     def _handleSoundText(self, text):
@@ -48,6 +48,45 @@ class AnkiRechtschreibung(Rechtschreibung):
             del span['title']
             del span['class']
         
+        return unicode(soup)
+    
+    def _handleImageText(self, text):
+        '''
+        handle sound text (duden html -> anki format)
+        
+        e.g.
+        <span class="term_img">
+            ...
+            medium
+            <img meta-type="image" meta-size="medium" meta-ref-id="201100282014" 
+            meta-dateiname="Taetigkeit-201100282014.jpg" 
+            meta-bu="Tätigkeit als Lehrer - ©&nbsp;MEV Verlag, Augsburg" 
+            meta-alt="Tätigkeit - Tätigkeit als Lehrer" 
+            meta-title="Tätigkeit - Tätigkeit als Lehrer" 
+            src="http://duden.de/_media_/small/T/Taetigkeit-201100282014.jpg">
+            
+            full
+            
+            ...
+        </span>
+        ->
+        <br ><span class="term_img"><img src="Taetigkeit-201100282014.jpg">
+        <div>T\xe4tigkeit als Lehrer - \xa9\xa0MEV Verlag, Augsburg</div></img></span>
+        '''
+        soup = BeautifulSoup(text)
+        
+        for span_img in soup.find_all('span', class_='term_img'):
+            img = span_img.find('img')
+            src = img['src']
+            src_local = src.split('/')[-1]
+            self.links[src_local] = src
+            meta = img['meta-bu']
+            span_img.string = ''
+            span_img.append(BeautifulSoup('<img src="' + src_local + '"><div>' + meta + '</div>'))
+            
+            # change span to div (new line)
+            span_img.name = 'div'
+            
         return unicode(soup)
 
 
