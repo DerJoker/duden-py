@@ -7,6 +7,7 @@ import copy
 
 from duden import Duden
 from anki import AnkiRechtschreibung
+from bs4 import BeautifulSoup
 
 logging.basicConfig(filename='anki_lookup.log',level=logging.DEBUG)
 
@@ -14,8 +15,8 @@ logging.basicConfig(filename='anki_lookup.log',level=logging.DEBUG)
 fn = 'anki.csv'
 fn_bak = 'anki.bak.csv'
 
-FieldNames = ['id_wt','wort','aktualisiert','id_rs','rechtschreibung','zertifikat',
-              'id_bd','bedeutung','id_bs','beispiel','star','stufe']
+FieldNames = ['id_wt','wort','aktualisiert','rechtschreibung','zertifikat',
+              'bedeutung_text','beispiel_text','star','stufe','bedeutung','beispiel']
 
 class AnkiRow:
     
@@ -41,19 +42,20 @@ class AnkiRow:
             else: self.dt_anki['aktualisiert'] = '1'    # updated
             
             for i in range(len(ls_rs)):
-                self.dt_anki['id_rs'] = str(i)
                 self.dt_anki['rechtschreibung'] = ls_rs[i]
                 
                 rechtschreibung = AnkiRechtschreibung(ls_rs[i])
                 # zertifikat not implemented yet, default ''
                 
                 # list tuple (beispiel, bedeutung)
-                ls_tbd= rechtschreibung.getCardExample()
+                ls_tbd = rechtschreibung.getCardExample()
                 if len(ls_tbd) == 0: # keep this record/row even if empty
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
                 for (beispiel, bedeutung) in ls_tbd:
                     dt_anki = copy.copy(self.dt_anki)
+                    dt_anki['beispiel_text'] = BeautifulSoup(beispiel).get_text().encode('utf-8')
+                    dt_anki['bedeutung_text'] = BeautifulSoup(bedeutung).get_text().encode('utf-8')
                     dt_anki['beispiel'] = beispiel.encode('utf-8')
                     dt_anki['bedeutung'] = bedeutung.encode('utf-8')
                     
@@ -63,6 +65,8 @@ class AnkiRow:
         else: print res.append(self.dt_anki)
         
         return res
+
+f_anki_links = open('links.txt', 'w')
 
 # read & write
 with open(fn_bak) as csv_bak:
@@ -77,3 +81,5 @@ with open(fn_bak) as csv_bak:
             logging.info(rows)
 #             rows = [item.decode('utf-8') for row in rows for item in row]
             writer.writerows(rows)
+
+f_anki_links.close()
