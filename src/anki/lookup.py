@@ -51,10 +51,8 @@ class AnkiRow:
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
                 for (beispiel, bedeutung) in ls_tbd:
-                    self.dt_anki['beispiel'] = beispiel
-                    self.dt_anki['bedeutung'] = bedeutung
-                    self.dt_anki['beispiel'] = 'beispiel'
-                    self.dt_anki['bedeutung'] = 'bedeutung'
+                    self.dt_anki['beispiel'] = beispiel.encode('utf-8')
+                    self.dt_anki['bedeutung'] = bedeutung.encode('utf-8')
                     
                     res.append(self.dt_anki)
         
