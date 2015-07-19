@@ -19,6 +19,10 @@ class AnkiRechtschreibung(Rechtschreibung):
         return [(beispiel, self.getWortText() + ' : ' + self._handleSoundText(self._handleImageText(bedeutung) + '<br >' + aussprache))
                 for (beispiel, bedeutung) in self.getTupleExampleAndDefinition()]
     
+    def getCardExampleText(self):
+        return [(BeautifulSoup(front).get_text(), BeautifulSoup(back).get_text())
+                for (front, back) in self.getCardExample()]
+    
     def _handleSoundText(self, text):
         '''
         handle sound text (duden html -> anki format)
