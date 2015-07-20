@@ -55,6 +55,18 @@ class Rechtschreibung:
     def getWortText(self):
         return unicode(self.soup.find('h1').get_text().strip())
     
+    def is_Wortschatz_des_Zertifikats_Deutsch(self):
+        soup = BeautifulSoup(self.html)
+        for div in soup.find_all('div',class_='field-name-field-didyouknow'):
+            # example: nachdenken
+            # Dieses Wort stand 1961 erstmals im Rechtschreibduden.
+            # Dieses Wort gehört zum Wortschatz des Zertifikats Deutsch.
+            contents = div.find_all('span',class_='content')
+            for content in contents:
+                if content.get_text().strip() == u'Dieses Wort gehört zum Wortschatz des Zertifikats Deutsch.':
+                    return True
+        return False
+    
     '''
     -> str (unicode)
     

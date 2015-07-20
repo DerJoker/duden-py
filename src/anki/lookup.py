@@ -47,7 +47,9 @@ class AnkiRow:
                 
                 rechtschreibung = AnkiRechtschreibung(ls_rs[i])
                 # zertifikat not implemented yet, default ''
-                
+                if rechtschreibung.is_Wortschatz_des_Zertifikats_Deutsch():
+                    self.dt_anki['zertifikat'] = '1'
+                else: self.dt_anki['zertifikat'] = '0'
                 # list tuple (beispiel, bedeutung)
                 ls_tbd = rechtschreibung.getCardExample()
                 self.links.update(rechtschreibung.getLinks())
