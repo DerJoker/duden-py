@@ -16,7 +16,8 @@ class AnkiRechtschreibung(Rechtschreibung):
         aussprache = self.sliceAussprache()
         
         # add aussprache to back, and transform to anki sound text
-        return [(beispiel, self.getWortText() + ' : ' + self._handleSoundText(self._handleImageText(bedeutung) + '<br >' + aussprache))
+        return [('<div class="' + self.rechtschreibung + '"></div>' + beispiel, 
+                 self.getWortText() + ' : ' + self._handleSoundText(self._handleImageText(bedeutung) + '<br >' + aussprache))
                 for (beispiel, bedeutung) in self.getTupleExampleAndDefinition()]
     
     def getCardExampleText(self):
