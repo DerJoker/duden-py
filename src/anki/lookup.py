@@ -35,7 +35,7 @@ class AnkiRow:
         
         # yet to update
         if self.dt_anki['aktualisiert'] == '' or self.dt_anki['aktualisiert'] == '0':
-            ls_rs = Duden(self.dt_anki['wort']).getRechtschreibung()
+            ls_rs = Duden(self.dt_anki['wort']).getRechtschreibungList()
             
             if len(ls_rs) == 0: # keep this record/row even if empty (no rechtschreibung found), please check again manually
                 self.dt_anki['aktualisiert'] = '0'  # failed to update

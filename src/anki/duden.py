@@ -18,7 +18,7 @@ class Duden:
         self.wort = wort
         self.url = Duden.URLDUDENONLINE + wort
     
-    def getRechtschreibung(self):
+    def getRechtschreibungList(self):
         '''
         Return list of Rechtschreibung, which (exactly) equals to the search word
         
@@ -257,7 +257,7 @@ def __UnitTest_Duden():
     for item in lt_wort:
         duden = Duden(item)
         print item
-        print duden.getRechtschreibung()
+        print duden.getRechtschreibungList()
 
 def __UnitTest_Rechtschreibung():
     
