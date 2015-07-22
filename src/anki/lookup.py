@@ -67,7 +67,7 @@ class AnkiRow:
                     res.append(dt_anki)
         
         # updated, return as it is
-        else: print res.append(self.dt_anki)
+        else: res.append(self.dt_anki)
         
         return res
 
