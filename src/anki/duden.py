@@ -30,8 +30,9 @@ class Duden:
         soup = BeautifulSoup(html)
         
         for item in soup.find_all('a', text=self.wort.decode('utf-8')):
-            if item['href'].split('/')[1] == 'rechtschreibung':
-                res.append(item['href'].split('/')[-1])
+            ls = item['href'].split('/')
+            if ls[1] == 'rechtschreibung':
+                res.append(ls[-1])
         
         return res
 
