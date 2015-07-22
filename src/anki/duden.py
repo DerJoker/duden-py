@@ -24,10 +24,16 @@ class Duden:
         
         self -> [rechtschreibung, ...]
         '''
+        res = []
+        
         html = tools.read(self.url)
         soup = BeautifulSoup(html)
-#         return [item.text for item in soup.find_all('h3')]
-        return [item['href'].split('/')[-1] for item in soup.find_all('a', text=self.wort.decode('utf-8'))]
+        
+        for item in soup.find_all('a', text=self.wort.decode('utf-8')):
+            if item['href'].split('/')[1] == 'rechtschreibung':
+                res.append(item['href'].split('/')[-1])
+        
+        return res
 
 class Rechtschreibung:
     
@@ -273,5 +279,5 @@ def __UnitTest_Rechtschreibung():
 
 if __name__ == '__main__':
     
-#     __UnitTest_Duden()
+    __UnitTest_Duden()
     __UnitTest_Rechtschreibung()
