@@ -81,11 +81,13 @@ with open(fn_bak) as csv_bak:
         writer.writeheader()
         
         for row in reader:
-            logging.info(row['id_wt'])
+            logging.info(row['id_wt'] + ' ' + row['wort'])
+            print row['id_wt'], ' ', row['wort']
             ar = AnkiRow(row)
             rows =  ar.extend()
             for value in ar.links.values():
                 f_anki_links.write(value + '\n')
             writer.writerows(rows)
+            logging.info('OK')
 
 f_anki_links.close()
