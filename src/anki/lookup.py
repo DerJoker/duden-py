@@ -5,18 +5,19 @@ import os
 import logging
 import copy
 
+from bs4 import BeautifulSoup
+
 from duden import Duden
 from anki import AnkiRechtschreibung
-from bs4 import BeautifulSoup
+import config
 
 logging.basicConfig(filename='anki_lookup.log',level=logging.DEBUG)
 
 # file name
-fn = 'anki.csv'
-fn_bak = 'anki.bak.csv'
+fn = config.fn
+fn_bak = config.fn_bak
 
-FieldNames = ['id_wt','wort','aktualisiert','rechtschreibung','zertifikat',
-              'bedeutung_text','beispiel_text','star','stufe','bedeutung','beispiel']
+FieldNames = config.FieldNames
 
 class AnkiRow:
     
