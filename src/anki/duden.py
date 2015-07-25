@@ -4,7 +4,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-import tools
+from tool import read
 
 '''
 Class
@@ -26,7 +26,7 @@ class Duden:
         '''
         res = []
         
-        html = tools.read(self.url)
+        html = read.read(self.url)
         soup = BeautifulSoup(html)
         
         for item in soup.find_all('a', text=self.wort.decode('utf-8')):
@@ -44,7 +44,7 @@ class Rechtschreibung:
         self.rechtschreibung = d_rechtschreibung
         self.url = Rechtschreibung.URLRECHTSCHREIBUNG + d_rechtschreibung
         
-        self.html = tools.read(self.url).replace('href="/rechtschreibung/', 
+        self.html = read.read(self.url).replace('href="/rechtschreibung/', 
                                                  'href="http://www.duden.de/rechtschreibung/')
         
         self.soup = BeautifulSoup(self.html)
