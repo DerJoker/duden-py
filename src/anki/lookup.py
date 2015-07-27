@@ -3,7 +3,6 @@
 import csv
 import os
 import logging
-import copy
 
 from bs4 import BeautifulSoup
 
@@ -59,7 +58,7 @@ class AnkiRow:
                     ls_tbd = [('','')]  # initialize to '', dealt with in the following for-loop
                 
                 for (beispiel, bedeutung) in ls_tbd:
-                    dt_anki = copy.copy(self.dt_anki)
+                    dt_anki = self.dt_anki.copy()
                     dt_anki['beispiel_text'] = BeautifulSoup(beispiel).get_text().encode('utf-8')
                     dt_anki['bedeutung_text'] = BeautifulSoup(bedeutung).get_text().encode('utf-8')
                     dt_anki['beispiel'] = beispiel.encode('utf-8')
