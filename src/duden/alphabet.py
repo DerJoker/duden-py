@@ -39,5 +39,4 @@ if __name__ == '__main__':
             writer.writerows(rows_encode)
             
             wort_rs = rows[-1][1]
-            print wort_rs
             rows = Rechtschreibung(wort_rs).get_alphabet_danach()
