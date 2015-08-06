@@ -2,6 +2,8 @@
 
 import os.path
 
+import sys
+sys.path.append('..')
 from tool import download
 
 fdn_media = 'media'

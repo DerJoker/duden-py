@@ -4,6 +4,8 @@ import logging
 
 from bs4 import BeautifulSoup
 
+import sys
+sys.path.append('..')
 from tool import read
 
 '''
