@@ -9,20 +9,17 @@ Based on alphabet.csv, save all the pages to folder rechtschreibung
 import os.path
 import csv
 
-import sys
-sys.path.append('..')
-from tool import download
-download_rechtschreibung = download.download
+import local
+save_rechtschreibung = local.save_rechtschreibung
 
 alphabet_csv = 'alphabet.csv'
-fdn_rechtschreibung = 'rechtschreibung'
 
 URLRECHTSCHREIBUNG = 'http://www.duden.de/rechtschreibung/'
 
 if __name__ == '__main__':
     
-    if not os.path.exists(fdn_rechtschreibung):
-        os.makedirs(fdn_rechtschreibung)
+    cnt_save_ok = 0
+    cnt_wort = len(open(alphabet_csv).readlines()) - 1
     
     with open(alphabet_csv) as csvfile:
         reader = csv.DictReader(csvfile)
@@ -30,6 +27,11 @@ if __name__ == '__main__':
             wort_rs = row['rechtschreibung']
             print wort_rs
             link = URLRECHTSCHREIBUNG + wort_rs
-            local = os.path.join(fdn_rechtschreibung, wort_rs + '.html')
-            if not os.path.exists(local):
-                download_rechtschreibung(link, local)
+            html_name = wort_rs + '.html'
+            if save_rechtschreibung(link, html_name):
+                cnt_save_ok += 1
+    
+    if cnt_save_ok < cnt_wort:
+        print cnt_wort - cnt_save_ok, 'left'
+        print 'please rerun this script...'
+    else: print 'download rechtschreibung pages complete.'
