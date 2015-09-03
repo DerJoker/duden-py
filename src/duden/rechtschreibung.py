@@ -21,7 +21,6 @@ class RechtschreibungHTML(object):
                                     'href="http://www.duden.de/rechtschreibung/')
         self.soup = BeautifulSoup(self.html)
         self.sections = self.get_sections()
-        self.links = {}    # dict {text:link, ...}
     
     def get_field_blaettern(self):
         return self.soup.find('div',class_='browse-lexem')
