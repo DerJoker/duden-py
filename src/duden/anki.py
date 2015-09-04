@@ -144,6 +144,6 @@ def make_cards_exmaple():
                         print 'download failed:', key, value
 
 if __name__ == '__main__':
-    _unit_test_anki()
+#     _unit_test_anki()
     
-#     make_cards_exmaple()
+    make_cards_exmaple()
