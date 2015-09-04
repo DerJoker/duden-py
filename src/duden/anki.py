@@ -48,7 +48,9 @@ class Anki():
         '''
         res = []
         aussprache = self.rshtml.get_section_aussprache()
-        aussprache = self._handle_sound_text(aussprache)
+        if aussprache != None:
+            aussprache = self._handle_sound_text(aussprache)
+        else: aussprache = ''
         
         for (beispiel, bedeutung) in self.get_tuple_beispiel_bedeutung():
             front = '<div class="' + self.wort_rs + '"></div>' + unicode(beispiel)
@@ -60,6 +62,9 @@ class Anki():
         return res
     
     def _handle_image_text(self, nvstring):
+        if nvstring == None:
+            return nvstring
+        
         soup = BeautifulSoup()
         for figure in nvstring.find_all('figure'):
             src = figure.find('img')['src']
@@ -72,6 +77,9 @@ class Anki():
         return nvstring
     
     def _handle_sound_text(self, nvstring):
+        if nvstring == None:
+            return nvstring
+        
         soup = BeautifulSoup()
         for audio in nvstring.find_all('a', class_='audio'):
             href = audio['href']
@@ -96,7 +104,7 @@ def _unit_test_anki():
                 'abermalig', 'abermals', 'abfahren', 'abfahren_lassen', 'Ausgleich', 'ausgleichbar', 'ausgleichen', 
                 'aushalten', 'Aushilfe', 'ausholen', 'auskaufen', 'Auskunft']
     
-    lst_text = ['Abfahrt', 'Abfall']
+    lst_text = ['Abfahrt', 'Abfall', 'Abnormitaet']
     
     for rechtschreibung in lst_text:
         html = url_read('http://www.duden.de/rechtschreibung/' + rechtschreibung)
@@ -136,6 +144,6 @@ def make_cards_exmaple():
                         print 'download failed:', key, value
 
 if __name__ == '__main__':
-#     _unit_test_anki()
+    _unit_test_anki()
     
-    make_cards_exmaple()
+#     make_cards_exmaple()
