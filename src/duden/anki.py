@@ -22,16 +22,38 @@ class Anki():
         self.rshtml = RechtschreibungHTML(html)
         self.links = {}    # dict {text:link, ...}
     
+    def get_tuple_beispiel_bedeutung(self):
+        res = []
+        
+        for (bedeutung, options) in self.rshtml.get_bedeutung_complete().items():
+            bedeutung = self._handle_image_text(bedeutung)
+            
+            beispiele = options.get(u'<h3>Beispiele</h3>', None)
+#             print beispiele
+            beispiel = options.get(u'<h3>Beispiel</h3>', None)
+#             print beispiel
+            
+            if beispiele != None:
+                for li in beispiele.find_all('li'):
+                    res.append((li,bedeutung))
+                    
+            if beispiel != None:
+                res.append((beispiel,bedeutung))
+        
+        return res
+    
     def get_card_examples(self):
         '''
         return list of (example as front, definition as back)
         '''
         res = []
         aussprache = self.rshtml.get_section_aussprache()
-        for (beispiel, bedeutung) in self.rshtml.get_tuple_beispiel_bedeutung():
+        aussprache = self._handle_sound_text(aussprache)
+        
+        for (beispiel, bedeutung) in self.get_tuple_beispiel_bedeutung():
             front = '<div class="' + self.wort_rs + '"></div>' + unicode(beispiel)
-            bedeutung = self._handle_image_text(bedeutung)
-            aussprache = self._handle_sound_text(aussprache)
+#             bedeutung = self._handle_image_text(bedeutung)
+            
             back = self.rshtml.get_wort_text() + ' : ' + unicode(bedeutung) + '<br >' + unicode(aussprache)
             res.append((front, back))
         
@@ -74,11 +96,15 @@ def _unit_test_anki():
                 'abermalig', 'abermals', 'abfahren', 'abfahren_lassen', 'Ausgleich', 'ausgleichbar', 'ausgleichen', 
                 'aushalten', 'Aushilfe', 'ausholen', 'auskaufen', 'Auskunft']
     
+    lst_text = ['Abfahrt', 'Abfall']
+    
     for rechtschreibung in lst_text:
         html = url_read('http://www.duden.de/rechtschreibung/' + rechtschreibung)
         anki = Anki(rechtschreibung, html)
+#         print anki.get_tuple_beispiel_bedeutung()
         for (front, back) in anki.get_card_examples():
             print front + '\t' + back
+        print anki.links
 
 def make_cards_exmaple():
     

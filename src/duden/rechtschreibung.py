@@ -119,7 +119,7 @@ class RechtschreibungHTML(object):
         '''
         if section != None:
             tmp = {}
-            for h3 in section.select('div > h3'):
+            for h3 in section.find_all('h3'):
                 # key = definition with Grammatik, Beispiel etc.
                 # value = list of options like Grammatik, Beispiel etc.
                 tmp.setdefault(h3.parent.parent, []).append(h3)
@@ -189,7 +189,7 @@ def _unit_test_rechtschreibung():
 #         print rs.get_wort_text()
 #         print rs.get_sections()
 #         print rs.get_sound_links()
-#         print rs.get_bedeutung_complete().items()
+        print rs.get_bedeutung_complete().items()
         print rs.get_tuple_beispiel_bedeutung()
 
 if __name__ == '__main__':
