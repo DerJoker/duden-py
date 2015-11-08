@@ -16,6 +16,7 @@ class AlphabetCSV():
 
 	reader = csv.DictReader(open(fn_alphabet_csv))
 	columns = reader.fieldnames
+	fieldname_rechtschreibung = 'rechtschreibung'
 
 	def __init__(self, column):
 		self.column = column
@@ -24,8 +25,9 @@ class AlphabetCSV():
 		lst = []
 		if self.column in AlphabetCSV.columns:
 			for row in AlphabetCSV.reader:
-				lst.append(row[self.column])
-		return filter(lambda x: x != '', lst)
+				if row[self.column] != '':
+					lst.append(row[AlphabetCSV.fieldname_rechtschreibung])
+		return lst
 
 if __name__ == '__main__':
 	alphacsv = AlphabetCSV('v_top50')
