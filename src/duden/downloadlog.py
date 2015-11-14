@@ -9,10 +9,16 @@ Created on Nov 11, 2015
 import csv
 import os.path
 
-class Entry():
+class DownloadLogEntryFactory():
 
-	def __init__(self, link, local, check):
-		self.dict = {link : {'link' : link, 'local' : local, 'check' : check}}
+	def __init__(self):
+		self.dict = {}
+
+	def make_entry(self, link, local, check):
+		self.dict.update({link : {'link' : link, 'local' : local, 'check' : check}})
+
+	def get_entries(self):
+		return self.dict
 
 class DownloadLog():
 
@@ -67,8 +73,11 @@ if __name__ == '__main__':
 	dict_to_update = downloadlog.export()
 
 	# add entries
-	entry = Entry('http', 'file', 'false')
-	dict_to_update.update(entry.dict)
+	factory = DownloadLogEntryFactory()
+	factory.make_entry('http', 'file', 'false')
+	factory.make_entry('http2', 'file2', 'true')
+	factory.make_entry('http3', 'file3', 'false')
+	dict_to_update.update(factory.get_entries())
 
 	# edit
 	for item in dict_to_update.values():
