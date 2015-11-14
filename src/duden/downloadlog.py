@@ -27,6 +27,14 @@ class DownloadLog():
 		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 		writer.writeheader()
 
+	@staticmethod # private?
+	def write(dict):
+		with open(DownloadLog.fn_download_log_csv, 'w') as csvfile:
+			writer = csv.DictWriter(csvfile, fieldnames=DownloadLog.fieldnames)
+			writer.writeheader()
+			for item in dict.values():
+				writer.writerow({'link' : item['link'], 'local' : item['local'], 'check' : item['check']})
+
 	@staticmethod
 	def addEntry(link, local, check):
 		'''
@@ -56,11 +64,7 @@ class DownloadLog():
 			for row in reader:
 				dict.update({row['link'] : row})
 
-		with open(DownloadLog.fn_download_log_csv, 'w') as csvfile:
-			writer = csv.DictWriter(csvfile, fieldnames=DownloadLog.fieldnames)
-			writer.writeheader()
-			for item in dict.values():
-				writer.writerow({'link' : item['link'], 'local' : item['local'], 'check' : item['check']})
+		DownloadLog.write(dict)
 
 	@staticmethod
 	def download():
