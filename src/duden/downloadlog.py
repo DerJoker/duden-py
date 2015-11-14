@@ -9,82 +9,70 @@ Created on Nov 11, 2015
 import csv
 import os.path
 
+class Entry():
+
+	def __init__(self, link, local, check):
+		self.dict = {link : {'link' : link, 'local' : local, 'check' : check}}
+
 class DownloadLog():
 
 	fn_download_log_csv = 'download.log.csv'
-	fn_download_log_bk_csv = 'download.log.bk.csv'
-	fn_download_log_tmp_csv = 'download.log.tmp.csv'
 
 	fieldnames = ['link', 'local', 'check']
 
-	if not os.path.exists(fn_download_log_csv):
-		with open(fn_download_log_csv, 'w') as csvfile:
-			writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-			writer.writeheader()
+	def __init__(self):
 
-	with open(fn_download_log_tmp_csv, 'w') as csvfile:
-		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-		writer.writeheader()
+		self.dict = self._read()
 
-	@staticmethod # private?
-	def write(dict):
-		with open(DownloadLog.fn_download_log_csv, 'w') as csvfile:
+	def _read(self, all=True):
+
+		ret = {}
+
+		if not os.path.exists(DownloadLog.fn_download_log_csv):
+			self._write({})
+
+		with file(DownloadLog.fn_download_log_csv) as csvfile:
+			reader = csv.DictReader(csvfile)
+			if all:
+				for row in reader:
+					# link as key, row (dict) as value
+					ret.update({row['link'] : row})
+			else:
+				for row in reader:
+					if row['check'] == 'false':
+						ret.update({row['link'] : row})
+
+		return ret
+
+	def _write(self, dict_to_write):
+		with file(DownloadLog.fn_download_log_csv, 'w') as csvfile:
 			writer = csv.DictWriter(csvfile, fieldnames=DownloadLog.fieldnames)
 			writer.writeheader()
-			for item in dict.values():
+			for item in dict_to_write.values():
 				writer.writerow({'link' : item['link'], 'local' : item['local'], 'check' : item['check']})
 
-	@staticmethod
-	def addEntry(link, local, check):
-		'''
-		add an entry to tmp file
-		'''
-		with open(DownloadLog.fn_download_log_tmp_csv, 'a') as csvfile:
-			writer = csv.DictWriter(csvfile, fieldnames=DownloadLog.fieldnames)
-			writer.writerow({'link' : link, 'local' : local, 'check' : check})
-
-	@staticmethod
-	def merge():
-		'''
-		merge tmp file to log file
-		'''
-		dict = {}
-
-		# firstly, tmp file
-		with open(DownloadLog.fn_download_log_tmp_csv, 'r') as csvfile:
-			reader = csv.DictReader(csvfile)
-			for row in reader:
-				dict.update({row['link'] : row})
-
-		# log file has higher priority
-		with open(DownloadLog.fn_download_log_csv, 'r') as csvfile:
-			reader = csv.DictReader(csvfile)
-			for row in reader:
-				dict.update({row['link'] : row})
-
-		DownloadLog.write(dict)
-
-	@staticmethod
-	def download():
-		'''
-		downlad & update the log
-		'''
-		pass
-
-	@staticmethod
-	def report():
+	def export(self):
 		'''
 		list unsuccessful download
 		'''
-		with open(DownloadLog.fn_download_log_csv, 'r') as csvfile:
-			reader = csv.DictReader(csvfile)
-			for row in reader:
-				if row['check'] == 'false':
-					print row
+		return self._read(all=False)
+
+	def update(self, dict_to_update):
+		self.dict.update(dict_to_update)
+		self._write(self.dict)
 
 if __name__ == '__main__':
-	DownloadLog.addEntry('http', 'file', 'false')
-	DownloadLog.addEntry('http2', 'file2', 'true')
-	DownloadLog.addEntry('http3', 'file3', 'false')
-	DownloadLog.merge()
-	DownloadLog.report()
+
+	downloadlog = DownloadLog()
+	dict_to_update = downloadlog.export()
+
+	# add entries
+	entry = Entry('http', 'file', 'false')
+	dict_to_update.update(entry.dict)
+
+	# edit
+	for item in dict_to_update.values():
+		item['check'] = 'true'
+
+	downloadlog.update(dict_to_update)
+	assert downloadlog.export() == {}
