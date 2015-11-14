@@ -27,8 +27,6 @@ class DownloadLog():
 		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 		writer.writeheader()
 
-	shutil.copyfile(fn_download_log_csv, fn_download_log_bk_csv)
-
 	@staticmethod
 	def addEntry(link, local, check):
 		'''
@@ -52,6 +50,7 @@ class DownloadLog():
 				dict.update({row['link'] : row})
 
 		# log file (or log bk file) has higher priority
+		shutil.copyfile(DownloadLog.fn_download_log_csv, DownloadLog.fn_download_log_bk_csv)
 		with open(DownloadLog.fn_download_log_bk_csv, 'r') as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
