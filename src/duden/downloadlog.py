@@ -8,7 +8,6 @@ Created on Nov 11, 2015
 
 import csv
 import os.path
-import shutil
 
 class DownloadLog():
 
@@ -57,9 +56,8 @@ class DownloadLog():
 			for row in reader:
 				dict.update({row['link'] : row})
 
-		# log file (or log bk file) has higher priority
-		shutil.copyfile(DownloadLog.fn_download_log_csv, DownloadLog.fn_download_log_bk_csv)
-		with open(DownloadLog.fn_download_log_bk_csv, 'r') as csvfile:
+		# log file has higher priority
+		with open(DownloadLog.fn_download_log_csv, 'r') as csvfile:
 			reader = csv.DictReader(csvfile)
 			for row in reader:
 				dict.update({row['link'] : row})
