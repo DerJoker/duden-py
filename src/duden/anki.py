@@ -15,6 +15,9 @@ import local
 read_from_local = local.read_from_local
 save_media = local.save_media
 
+from alphabetcsv import AlphabetCSV
+from downloadlog import DownloadLogEntryFactory, DownloadLog
+
 class Anki():
     
     def __init__(self, wort_rs, html):
@@ -41,20 +44,35 @@ class Anki():
                 res.append((beispiel,bedeutung))
         
         return res
+
+    def _get_aussprache(self):
+        '''
+        get anki sound text (private)
+        '''
+        aussprache = self.rshtml.get_section_aussprache()
+        if aussprache != None:
+            aussprache = self._handle_sound_text(aussprache)
+        else: aussprache = ''
+        return aussprache
+
+    def get_card_aussprache(self):
+        '''
+        return tuple (wort as front, aussprache as back)
+        '''
+        wort = self.rshtml.get_wort_text()
+        aussprache = self._get_aussprache()
+        return (wort, unicode(aussprache))
     
     def get_card_examples(self):
         '''
         return list of (example as front, definition as back)
         '''
         res = []
-        aussprache = self.rshtml.get_section_aussprache()
-        if aussprache != None:
-            aussprache = self._handle_sound_text(aussprache)
-        else: aussprache = ''
+        aussprache = self._get_aussprache()
         
         for (beispiel, bedeutung) in self.get_tuple_beispiel_bedeutung():
             front = '<div class="' + self.wort_rs + '"></div>' + unicode(beispiel)
-#             bedeutung = self._handle_image_text(bedeutung)
+            # bedeutung = self._handle_image_text(bedeutung)
             
             back = self.rshtml.get_wort_text() + ' : ' + unicode(bedeutung) + '<br >' + unicode(aussprache)
             res.append((front, back))
@@ -91,59 +109,24 @@ class Anki():
         
         return nvstring
 
-def _unit_test_anki():
-    import sys
-    sys.path.append('..')
-    from tool import read
-    url_read = read.read
-    
-    lst_text = ['getrauen', 'lassen', 'nachdenken', 'a_Zeichen_fuer_und', 'Abbild', 'abbilden', 'Abbildung', 
-                'Abbruch', 'abbuegeln', 'abdecken', 'Abend', 'Abendbrot', 'Abendbrotzeit', 'abendessen', 
-                'Abendessen', 'abendlich', 'Abendlicht', 'abends', 'Abenteuer', 'abenteuern', 
-                'aber_Konjunktion_Bedeutung_doch', 'aber_Partikel', 'aber_Adverb_Bedeutung_wieder', 'aberglaeubig', 
-                'abermalig', 'abermals', 'abfahren', 'abfahren_lassen', 'Ausgleich', 'ausgleichbar', 'ausgleichen', 
-                'aushalten', 'Aushilfe', 'ausholen', 'auskaufen', 'Auskunft']
-    
-    lst_text = ['Abfahrt', 'Abfall', 'Abnormitaet']
-    
-    for rechtschreibung in lst_text:
-        html = url_read('http://www.duden.de/rechtschreibung/' + rechtschreibung)
-        anki = Anki(rechtschreibung, html)
-#         print anki.get_tuple_beispiel_bedeutung()
-        for (front, back) in anki.get_card_examples():
-            print front + '\t' + back
-        print anki.links
+'''
+Main
+'''
 
-def make_cards_exmaple():
-    
-    # read from 'alphabet.edit.csv'
-    fn_alphabet_edit_csv = 'alphabet.edit.csv'
-    # write into 'anki.result.csv'
-    fn_anki_result_csv = 'anki.result.csv'
-    
+def make_cards_aussprache():
+    fieldname_aussprache = 'aussprache'
+    fn_anki_result_csv = 'anki.' + fieldname_aussprache + '.csv'
+
+    alphabetcsv = AlphabetCSV(fieldname_aussprache)
+
     with open(fn_anki_result_csv, 'w') as csv_anki_result:
-        pass
-    
-    with open(fn_alphabet_edit_csv) as csv_alphabet_edit:
-        reader = csv.DictReader(csv_alphabet_edit)
-        for row in reader:
-            if row['star'] != '':
-                wort_rs = row['rechtschreibung']
-                print wort_rs
-                html = read_from_local(wort_rs + '.html')
-                 
-                anki = Anki(wort_rs, html)
-                 
-                with open(fn_anki_result_csv, 'a') as csv_anki_result:
-                    writer = csv.writer(csv_anki_result)
-                    writer.writerows([(front.encode('utf-8'), back.encode('utf-8'))
-                                      for (front, back) in anki.get_card_examples()])
-                     
-                for (key, value) in anki.links.items():
-                    if save_media(value, key) != True:
-                        print 'download failed:', key, value
+        writer = csv.writer(csv_anki_result)
+        for item in alphabetcsv.getNoneEmptyList():
+            print item
+            html = read_from_local(item + '.html')
+            print html
+            anki = Anki(item, html)
+            writer.writerow(anki.get_card_aussprache())
 
 if __name__ == '__main__':
-#     _unit_test_anki()
-    
-    make_cards_exmaple()
+    make_cards_aussprache()
