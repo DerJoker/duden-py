@@ -73,7 +73,8 @@ class DownloadLog():
 		'''
 		dict = self._read()
 		for item in dict.values():
-			if item['check'] != 'true' and callback_func(item['link']) == True:
+			if item['check'] != 'true' and \
+			callback_func(item['link'], item['local']) == True:
 				item['check'] = 'true'
 
 		self._write(dict, 'w')
@@ -92,7 +93,7 @@ if __name__ == '__main__':
 	downloadlog.append(factory)
 
 	# callback
-	def always_true(s):
+	def always_true(link, local):
 		return True
 
 	downloadlog.update(always_true)
