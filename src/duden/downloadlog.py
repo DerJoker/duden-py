@@ -14,11 +14,9 @@ class DownloadLogEntryFactory():
 	def __init__(self):
 		self.dict = {}
 
-	def make_entry(self, link, local, check):
+	def make_entry(self, link, local, check='false'):
 		self.dict.update({link : {'link' : link, 'local' : local, 'check' : check}})
 
-	def get_entries(self):
-		return self.dict
 
 class DownloadLog():
 
@@ -28,14 +26,12 @@ class DownloadLog():
 
 	def __init__(self):
 
-		self.dict = self._read()
+		if not os.path.exists(DownloadLog.fn_download_log_csv):
+			self._write({}, 'w')
 
 	def _read(self, all=True):
 
 		ret = {}
-
-		if not os.path.exists(DownloadLog.fn_download_log_csv):
-			self._write({})
 
 		with file(DownloadLog.fn_download_log_csv) as csvfile:
 			reader = csv.DictReader(csvfile)
@@ -50,12 +46,19 @@ class DownloadLog():
 
 		return ret
 
-	def _write(self, dict_to_write):
-		with file(DownloadLog.fn_download_log_csv, 'w') as csvfile:
+	def _write(self, dict_to_write, mode='a'):
+		with file(DownloadLog.fn_download_log_csv, mode) as csvfile:
 			writer = csv.DictWriter(csvfile, fieldnames=DownloadLog.fieldnames)
-			writer.writeheader()
+			if mode == 'w': writer.writeheader()
 			for item in dict_to_write.values():
-				writer.writerow({'link' : item['link'], 'local' : item['local'], 'check' : item['check']})
+				writer.writerow({'link' : item['link'], 'local' : item['local'],
+								'check' : item['check']})
+
+	def append(self, downloadlog_entry_factory):
+		'''
+		append new entries to the end
+		'''
+		self._write(downloadlog_entry_factory.dict)
 
 	def export(self):
 		'''
@@ -63,25 +66,35 @@ class DownloadLog():
 		'''
 		return self._read(all=False)
 
-	def update(self, dict_to_update):
-		self.dict.update(dict_to_update)
-		self._write(self.dict)
+	def update(self, callback_func):
+		'''
+		update log.csv
+		if callback function returns True, change check to "true"
+		'''
+		dict = self._read()
+		for item in dict.values():
+			if item['check'] != 'true' and callback_func(item['link']) == True:
+				item['check'] = 'true'
+
+		self._write(dict, 'w')
+
 
 if __name__ == '__main__':
 
 	downloadlog = DownloadLog()
-	dict_to_update = downloadlog.export()
 
 	# add entries
 	factory = DownloadLogEntryFactory()
 	factory.make_entry('http', 'file', 'false')
 	factory.make_entry('http2', 'file2', 'true')
-	factory.make_entry('http3', 'file3', 'false')
-	dict_to_update.update(factory.get_entries())
+	factory.make_entry('http3', 'file3')
 
-	# edit
-	for item in dict_to_update.values():
-		item['check'] = 'true'
+	downloadlog.append(factory)
 
-	downloadlog.update(dict_to_update)
+	# callback
+	def always_true(s):
+		return True
+
+	downloadlog.update(always_true)
+
 	assert downloadlog.export() == {}
