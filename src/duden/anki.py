@@ -23,7 +23,6 @@ class Anki():
     def __init__(self, wort_rs, html):
         self.wort_rs = wort_rs
         self.rshtml = RechtschreibungHTML(html)
-        self.links = {}    # dict {text:link, ...}
     
     def get_tuple_beispiel_bedeutung(self):
         res = []
@@ -83,30 +82,40 @@ class Anki():
         if nvstring == None:
             return nvstring
         
+        factory = DownloadLogEntryFactory()
         soup = BeautifulSoup()
+
         for figure in nvstring.find_all('figure'):
             src = figure.find('img')['src']
             src_local = src.split('/')[-1]
-            self.links[src_local] = src
+            factory.make_entry(src, src_local)
             img = soup.new_tag('img')
             img['src'] = src_local
             figure.img.replace_with(img)
         
+        downloadlog = DownloadLog()
+        downloadlog.append(factory)
+
         return nvstring
     
     def _handle_sound_text(self, nvstring):
         if nvstring == None:
             return nvstring
-        
+
+        factory = DownloadLogEntryFactory()
         soup = BeautifulSoup()
+
         for audio in nvstring.find_all('a', class_='audio'):
             href = audio['href']
             href_local = self.wort_rs + '-' + href.split('/')[-1]
-            self.links[href_local] = href
+            factory.make_entry(href, href_local)
             span = soup.new_tag('span')
             span.string = '[sound:' + href_local + ']'
             audio.replace_with(span)
         
+        downloadlog = DownloadLog()
+        downloadlog.append(factory)
+
         return nvstring
 
 '''
@@ -114,6 +123,7 @@ Main
 '''
 
 def make_cards_aussprache():
+
     fieldname_aussprache = 'aussprache'
     fn_anki_result_csv = 'anki.' + fieldname_aussprache + '.csv'
 
@@ -128,5 +138,23 @@ def make_cards_aussprache():
             anki = Anki(item, html)
             writer.writerow(anki.get_card_aussprache())
 
+def make_cards_example():
+
+    column_name = 'star'
+    fn_anki_result_csv = 'anki.{name}.csv'.format(name=column_name)
+
+    alphabetcsv = AlphabetCSV(column_name)
+    
+    with open(fn_anki_result_csv, 'w') as csv_anki_result:
+        writer = csv.writer(csv_anki_result)
+        for item in alphabetcsv.getNoneEmptyList():
+            print item
+            html = read_from_local(item + '.html')
+            print html
+            anki = Anki(item, html)
+            writer.writerows([(front.encode('utf-8'), back.encode('utf-8'))
+                                      for (front, back) in anki.get_card_examples()])
+
 if __name__ == '__main__':
     make_cards_aussprache()
+    make_cards_example()
