@@ -14,21 +14,24 @@ assert os.path.exists(fn_alphabet_csv)
 
 class AlphabetCSV():
 
-	reader = csv.DictReader(open(fn_alphabet_csv))
-	columns = reader.fieldnames
-	fieldname_rechtschreibung = 'rechtschreibung'
-
 	def __init__(self, column):
+		self.reader = csv.DictReader(open(fn_alphabet_csv))
+		self.columns = self.reader.fieldnames
+		self.fieldname_rechtschreibung = 'rechtschreibung'
 		self.column = column
 
-	def getNoneEmptyList(self):
+	def get_none_empty_list(self):
 		lst = []
-		if self.column in AlphabetCSV.columns:
-			for row in AlphabetCSV.reader:
+		if self.column in self.columns:
+			for row in self.reader:
 				if row[self.column] != '':
-					lst.append(row[AlphabetCSV.fieldname_rechtschreibung])
+					lst.append(row[self.fieldname_rechtschreibung])
 		return lst
 
 if __name__ == '__main__':
-	alphacsv = AlphabetCSV('v_top50')
-	print alphacsv.getNoneEmptyList()
+	alphacsv = AlphabetCSV('aussprache')
+	print alphacsv.column
+	print alphacsv.get_none_empty_list()
+	alphacsv = AlphabetCSV('star')
+	print alphacsv.column
+	print alphacsv.get_none_empty_list()

@@ -131,7 +131,7 @@ def make_cards_aussprache():
 
     with open(fn_anki_result_csv, 'w') as csv_anki_result:
         writer = csv.writer(csv_anki_result)
-        for item in alphabetcsv.getNoneEmptyList():
+        for item in alphabetcsv.get_none_empty_list():
             print item
             html = read_from_local(item + '.html')
             # print html
@@ -142,13 +142,14 @@ def make_cards_aussprache():
 def make_cards_example():
 
     column_name = 'star'
-    fn_anki_result_csv = 'anki.{name}.csv'.format(name=column_name)
+    fn_anki_result_csv = 'anki.{}.csv'.format(column_name)
 
     alphabetcsv = AlphabetCSV(column_name)
     
     with open(fn_anki_result_csv, 'w') as csv_anki_result:
         writer = csv.writer(csv_anki_result)
-        for item in alphabetcsv.getNoneEmptyList():
+        print column_name
+        for item in alphabetcsv.get_none_empty_list():
             print item
             html = read_from_local(item + '.html')
             # print html
