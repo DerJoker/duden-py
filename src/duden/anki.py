@@ -148,7 +148,6 @@ def make_cards_example():
     
     with open(fn_anki_result_csv, 'w') as csv_anki_result:
         writer = csv.writer(csv_anki_result)
-        print column_name
         for item in alphabetcsv.get_none_empty_list():
             print item
             html = read_from_local(item + '.html')
@@ -160,3 +159,6 @@ def make_cards_example():
 if __name__ == '__main__':
     make_cards_aussprache()
     make_cards_example()
+
+    downloadlog = DownloadLog()
+    downloadlog.update(save_media)

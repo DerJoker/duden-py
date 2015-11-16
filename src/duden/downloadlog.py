@@ -76,6 +76,7 @@ class DownloadLog():
 			if item['check'] != 'true' and \
 			callback_func(item['link'], item['local']) == True:
 				item['check'] = 'true'
+				print 'update:', item['link']
 
 		self._write(dict, 'w')
 
