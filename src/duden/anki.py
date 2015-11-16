@@ -134,9 +134,10 @@ def make_cards_aussprache():
         for item in alphabetcsv.getNoneEmptyList():
             print item
             html = read_from_local(item + '.html')
-            print html
+            # print html
             anki = Anki(item, html)
-            writer.writerow(anki.get_card_aussprache())
+            wort, aussprache = anki.get_card_aussprache()
+            writer.writerow((wort.encode('utf-8'), aussprache.encode('utf-8')))
 
 def make_cards_example():
 
@@ -150,7 +151,7 @@ def make_cards_example():
         for item in alphabetcsv.getNoneEmptyList():
             print item
             html = read_from_local(item + '.html')
-            print html
+            # print html
             anki = Anki(item, html)
             writer.writerows([(front.encode('utf-8'), back.encode('utf-8'))
                                       for (front, back) in anki.get_card_examples()])
