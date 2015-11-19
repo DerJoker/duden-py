@@ -22,7 +22,7 @@ class DownloadLog():
 
 	fn_download_log_csv = 'download.log.csv'
 
-	fieldnames = ['link', 'local', 'check']
+	fieldnames = ('link', 'local', 'check')
 
 	def __init__(self):
 
