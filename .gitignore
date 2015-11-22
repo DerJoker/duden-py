@@ -1,7 +1,7 @@
 
 *.pyc
 
-src/test.py
+test.py
 
 *.mp3
 
