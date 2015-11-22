@@ -9,16 +9,11 @@ Created on Aug 2, 2015
 from bs4 import BeautifulSoup
 
 class RechtschreibungHTML(object):
-    '''
-    classdocs
-    '''
 
     def __init__(self, html):
-        '''
-        Constructor
-        '''
+        # complete link
         self.html = html.replace('href="/rechtschreibung/',
-                                    'href="http://www.duden.de/rechtschreibung/')
+                                'href="http://www.duden.de/rechtschreibung/')
         self.soup = BeautifulSoup(self.html)
         self.sections = self.get_sections()
     
@@ -26,26 +21,19 @@ class RechtschreibungHTML(object):
         return self.soup.find('div',class_='browse-lexem')
     
     def get_alphabet_davor(self):
-        field_blaettern = self.get_field_blaettern()
-        
-        if field_blaettern != None:
-            prev_div = field_blaettern.find('div', class_='browse-lexem-title', text='Im Alphabet davor')
-#             print prev_div
-            if prev_div != None:
-                prev_lems = prev_div.find_next_sibling()
-                return [(a.get_text(), a['href'].split('/')[-1]) for a in prev_lems.find_all('a')]
-            else: return []
-        
-        return []
+        return self._get_alphabet('Im Alphabet davor')
     
     def get_alphabet_danach(self):
+        return self._get_alphabet('Im Alphabet danach')
+        
+    def _get_alphabet(self, text):
         field_blaettern = self.get_field_blaettern()
         
         if field_blaettern != None:
-            next_div = field_blaettern.find('div', class_='browse-lexem-title', text='Im Alphabet danach')
-#             print next_div
-            if next_div != None:
-                next_lems = next_div.find_next_sibling()
+            div = field_blaettern.find('div', class_='browse-lexem-title', text=text)
+            # print next_div
+            if div != None:
+                next_lems = div.find_next_sibling()
                 return [(a.get_text(), a['href'].split('/')[-1]) for a in next_lems.find_all('a')]
             else: return []
         
@@ -142,9 +130,9 @@ class RechtschreibungHTML(object):
         
         for (bedeutung, options) in self.get_bedeutung_complete().items():
             beispiele = options.get(u'<h3>Beispiele</h3>', None)
-#             print beispiele
+            # print beispiele
             beispiel = options.get(u'<h3>Beispiel</h3>', None)
-#             print beispiel
+            # print beispiel
             
             if beispiele != None:
                 for li in beispiele.find_all('li'):
@@ -167,7 +155,7 @@ def _unit_test_rechtschreibung():
                 '80er_Jahre', '24_Sekunden_Regel']
     
     # test is_Wortschatz_des_Zertifikats_Deutsch()
-#     lst_text = ['getrauen', 'lassen', 'nachdenken']
+    # lst_text = ['getrauen', 'lassen', 'nachdenken']
     
     # test bedeutung
     lst_text = ['getrauen', 'lassen', 'nachdenken', 'a_Zeichen_fuer_und', 'Abbild', 'abbilden', 'Abbildung', 
@@ -180,15 +168,15 @@ def _unit_test_rechtschreibung():
     for rechtschreibung in lst_text:
         print rechtschreibung
         html = url_read('http://www.duden.de/rechtschreibung/' + rechtschreibung)
-#         print html
+        # print html
         rs = RechtschreibungHTML(html)
-#         print rs.get_field_blaettern()
-#         print rs.get_alphabet_davor()
-#         print rs.get_alphabet_danach()
-#         print rs.is_Wortschatz_des_Zertifikats_Deutsch()
-#         print rs.get_wort_text()
-#         print rs.get_sections()
-#         print rs.get_sound_links()
+        # print rs.get_field_blaettern()
+        # print rs.get_alphabet_davor()
+        # print rs.get_alphabet_danach()
+        # print rs.is_Wortschatz_des_Zertifikats_Deutsch()
+        # print rs.get_wort_text()
+        # print rs.get_sections()
+        # print rs.get_sound_links()
         print rs.get_bedeutung_complete().items()
         print rs.get_tuple_beispiel_bedeutung()
 
