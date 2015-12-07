@@ -16,6 +16,8 @@ class DownloadLogEntryFactory():
 
 	def make_entry(self, link, local, check='false'):
 		self.dict.update({link : {'link' : link, 'local' : local, 'check' : check}})
+		
+	# [to-do: refactor] .tolist()
 
 
 class DownloadLog():
